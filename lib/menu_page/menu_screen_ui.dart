@@ -1,10 +1,9 @@
-import 'package:bhashini/menu_page/widgets/menu_carousel/menu_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'widgets/menu_carousel/menu_services_carousel.dart';
+import 'widgets/menu_carousel/menu_carousel.dart';
 import 'widgets/menu_items/menu_items.dart';
 
 class MenuScreen extends StatelessWidget {

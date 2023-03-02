@@ -1,6 +1,7 @@
-import 'package:bhashini/menu_page/menu_screen_binding.dart';
-import 'package:bhashini/menu_page/menu_screen_ui.dart';
 import 'package:get/route_manager.dart';
+
+import 'menu_page/menu_screen_binding.dart';
+import 'menu_page/menu_screen_ui.dart';
 
 class AppRoutes {
   static const _menuPageRoute = '/menu';
