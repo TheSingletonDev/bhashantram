@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bhashantram/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'model_menu_item_container.dart';
@@ -29,10 +31,13 @@ class MenuItemServices extends StatelessWidget {
                       text: AutoSizeText('Text',
                           style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400)))),
               Expanded(
-                  child: MenuItemContainerModel(
-                      icon: Icon(Icons.social_distance_outlined, size: 70.w, color: Theme.of(context).colorScheme.onPrimary),
-                      text: AutoSizeText('Converse',
-                          style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400)))),
+                  child: GestureDetector(
+                onTap: () => Get.toNamed(AppRoutes.getCoversationPageRoute()),
+                child: MenuItemContainerModel(
+                    icon: Icon(Icons.social_distance_outlined, size: 70.w, color: Theme.of(context).colorScheme.onPrimary),
+                    text: AutoSizeText('Converse',
+                        style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400))),
+              )),
             ],
           ),
         ),

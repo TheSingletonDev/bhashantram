@@ -51,3 +51,4 @@ analysis_options.yaml
 bhashini.iml
 pubspec.lock
 pubspec.yaml
+--shrink
