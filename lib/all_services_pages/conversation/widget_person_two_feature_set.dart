@@ -1,10 +1,17 @@
+import 'dart:math';
+
+import 'package:audio_wave/audio_wave.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../global/widget_snackbar.dart';
 import 'conversation_screen_controller.dart';
+import 'widget_rec_fedback_pulse_wave.dart';
 
 class PersonTwoFeatureSetBottom extends StatelessWidget {
   const PersonTwoFeatureSetBottom({
@@ -31,23 +38,52 @@ class PersonTwoFeatureSetBottom extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.h),
-          // Base Container with Speaker, Copy buttons etc.
+          // Base Container with Mic Icon, Speaker, Copy buttons etc.
           Expanded(
             flex: 2,
             child: Row(
               children: [
                 Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(200.w), color: Theme.of(context).colorScheme.primary))),
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(200.w), color: Theme.of(context).colorScheme.primary),
+                    child: GetBuilder<ConversationScreenController>(builder: (conversationScreenController) {
+                      return conversationScreenController.isMicIconTappedDownAndHolding
+                          ? const RecordingFeedbackPulseAndWave()
+                          : Row(
+                              children: [
+                                Expanded(child: Container(height: double.infinity, color: Colors.yellow)),
+                                // SizedBox(width: 10.w),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 10.w),
+                                  margin: EdgeInsets.symmetric(horizontal: 10.w),
+                                  height: double.infinity,
+                                  width: 0.27.sw,
+                                  child: FilledButton(
+                                    onPressed: () => print('Lanugage Button Pressed'),
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.onPrimary.withOpacity(0.75))),
+                                    child: AutoSizeText(
+                                      'English',
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                    }),
+                  ),
+                ),
                 SizedBox(width: 10.h),
                 // Added this builder method just so we can have tapStartTime and tapDuration variables here itself
+                // Mic Icon
                 Builder(builder: (context) {
                   DateTime? tapStartTime;
                   Duration? tapDuration;
                   return GestureDetector(
                     // This wont work to detect if it was just a tap or tap and hold coz implicitly once tap up is hit, onTap completes too.
                     // onTap: () => showSnackbar(title: 'Error', message: 'Tap and hold to record!', context: context),
-                    onTapDown: (details) {
+                    onTapDown: (_) {
                       AudioPlayer().play(AssetSource('audio/beep.mp3'));
                       tapStartTime = DateTime.now();
                       ConversationScreenController conversationScreenController = Get.find();
