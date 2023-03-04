@@ -4,8 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../widgets/model_services_page_header_container.dart';
-import 'widget_person_one_feature_set.dart';
-import 'widget_person_two_feature_set.dart';
+import 'widgets/widget_person_one_feature_set_bottom/person_one_feature_set_bottom.dart';
+import 'widgets/widget_person_one_feature_set_bottom/person_one_feature_set_bottom.dart';
+import 'widgets/widget_person_two_feature_set_top/person_two_feature_set_top.dart';
 
 class ConversationScreen extends StatelessWidget {
   const ConversationScreen({super.key});
@@ -35,12 +36,12 @@ class ConversationScreen extends StatelessWidget {
                   SizedBox(height: 20.w),
                   // Top Base Container that contains Output Container and Container with Copy, Share Buttons etc.
                   const Expanded(
-                    child: PersonOneFeatureSetTop(),
+                    child: PersonTwoFeatureSetTop(),
                   ),
                   SizedBox(height: 50.h),
                   // Bottom Base Container that contains Output Container and Container with Copy, Share Buttons etc.
                   const Expanded(
-                    child: PersonTwoFeatureSetBottom(),
+                    child: PersonOneFeatureSetBottom(),
                   ),
                 ],
               ),

@@ -1,20 +1,15 @@
-import 'dart:math';
-
-import 'package:audio_wave/audio_wave.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../global/widget_snackbar.dart';
+import '../widget_person_one_feature_set_bottom/person_one_controller.dart';
+import '../../widget_rec_fedback_pulse_wave.dart';
 
-import '../../global/widget_snackbar.dart';
-import 'conversation_screen_controller.dart';
-import 'widget_rec_fedback_pulse_wave.dart';
-
-class PersonTwoFeatureSetBottom extends StatelessWidget {
-  const PersonTwoFeatureSetBottom({
+class PersonTwoFeatureSetTop extends StatelessWidget {
+  const PersonTwoFeatureSetTop({
     super.key,
   });
 
@@ -46,8 +41,8 @@ class PersonTwoFeatureSetBottom extends StatelessWidget {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(200.w), color: Theme.of(context).colorScheme.primary),
-                    child: GetBuilder<ConversationScreenController>(builder: (conversationScreenController) {
-                      return conversationScreenController.isMicIconTappedDownAndHolding
+                    child: GetBuilder<PersonOneController>(builder: (personOneController) {
+                      return personOneController.isMicIconTappedDownAndHolding
                           ? const RecordingFeedbackPulseAndWave()
                           : Row(
                               children: [
@@ -86,9 +81,9 @@ class PersonTwoFeatureSetBottom extends StatelessWidget {
                     onTapDown: (_) {
                       AudioPlayer().play(AssetSource('audio/beep.mp3'));
                       tapStartTime = DateTime.now();
-                      ConversationScreenController conversationScreenController = Get.find();
-                      conversationScreenController.changeIsMicIconTappedDown(
-                          isMicIconTappedDownAndHolding: !conversationScreenController.isMicIconTappedDownAndHolding);
+                      PersonOneController personOneController = Get.find();
+                      personOneController.changeIsMicIconTappedDown(
+                          isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
                     },
                     onTapUp: (_) {
                       if (tapStartTime != null) {
@@ -98,40 +93,39 @@ class PersonTwoFeatureSetBottom extends StatelessWidget {
                         }
                         tapStartTime = null;
                       }
-                      ConversationScreenController conversationScreenController = Get.find();
-                      conversationScreenController.changeIsMicIconTappedDown(
-                          isMicIconTappedDownAndHolding: !conversationScreenController.isMicIconTappedDownAndHolding);
+                      PersonOneController personOneController = Get.find();
+                      personOneController.changeIsMicIconTappedDown(
+                          isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
                     },
                     onTapCancel: () {
-                      ConversationScreenController conversationScreenController = Get.find();
-                      conversationScreenController.changeIsMicIconTappedDown(
-                          isMicIconTappedDownAndHolding: !conversationScreenController.isMicIconTappedDownAndHolding);
+                      PersonOneController personOneController = Get.find();
+                      personOneController.changeIsMicIconTappedDown(
+                          isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
                     },
                     onPanEnd: (_) {
-                      ConversationScreenController conversationScreenController = Get.find();
+                      PersonOneController personOneController = Get.find();
                       // If condition to check that things execute only when button is tapped down.
                       /**Without If condition:
                          * User taps and hold the button, value becomes true,
                          * User pans slightly, things execute value becomes false, mic gets released
                          * Now if pan continues (which usually does), this will execute again and will make value true which will make mic to be pressed again
                          */
-                      if (conversationScreenController.isMicIconTappedDownAndHolding) {
-                        conversationScreenController.changeIsMicIconTappedDown(
-                            isMicIconTappedDownAndHolding: !conversationScreenController.isMicIconTappedDownAndHolding);
+                      if (personOneController.isMicIconTappedDownAndHolding) {
+                        personOneController.changeIsMicIconTappedDown(
+                            isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
                       }
                     },
-                    child: GetBuilder<ConversationScreenController>(builder: (conversationScreenController) {
+                    child: GetBuilder<PersonOneController>(builder: (personOneController) {
                       return Container(
                         width: 0.15.sw,
                         height: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.w),
-                            color: conversationScreenController.isMicIconTappedDownAndHolding
+                            color: personOneController.isMicIconTappedDownAndHolding
                                 ? Theme.of(context).colorScheme.primary.withOpacity(0.6)
                                 : Theme.of(context).colorScheme.primary),
                         child: Icon(Icons.mic_none_rounded,
-                            size: conversationScreenController.isMicIconTappedDownAndHolding ? 60.w : 40.w,
-                            color: Theme.of(context).colorScheme.onPrimary),
+                            size: personOneController.isMicIconTappedDownAndHolding ? 60.w : 40.w, color: Theme.of(context).colorScheme.onPrimary),
                       );
                     }),
                   );

@@ -12,6 +12,7 @@ class RecordingFeedbackPulseAndWave extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        SizedBox(width: 10.w),
         SpinKitPulse(
           color: Theme.of(context).colorScheme.onPrimary,
           size: 50.w,
@@ -19,9 +20,9 @@ class RecordingFeedbackPulseAndWave extends StatelessWidget {
         SizedBox(width: 10.w),
         AudioWave(
             height: 50.h,
-            width: 0.6.sw,
+            width: 0.59.sw,
             spacing: 3,
-            bars: List.generate(55, (index) {
+            bars: List.generate(60, (index) {
               return AudioWaveBar(
                 heightFactor: Random().nextDouble(),
                 color: Theme.of(context).colorScheme.onPrimary,
