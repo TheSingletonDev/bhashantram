@@ -1,12 +1,11 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_two_feature_set_top/person_two_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../../../global/widget_snackbar.dart';
-import '../widget_person_one_feature_set_bottom/person_one_controller.dart';
-import '../../widget_rec_fedback_pulse_wave.dart';
+import '../widget_rec_fedback_pulse_wave.dart';
+import 'widget_person_two_gender_selection_btn.dart';
+import 'widget_person_two_lang_selection_btn.dart';
+import 'widget_person_two_mic_icon_btn.dart';
 
 class PersonTwoFeatureSetTop extends StatelessWidget {
   const PersonTwoFeatureSetTop({
@@ -20,6 +19,77 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // SizedBox(height: 20.h),
+
+          // Base Container with Mic Icon, Speaker, Copy buttons etc.
+          Expanded(
+            flex: 2,
+            // Row with Mic icon and Circular Container with Copy Share etc/Recording Wave
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(200.w), color: Theme.of(context).colorScheme.primary),
+                    child: GetBuilder<PersonTwoController>(builder: (personTwoController) {
+                      return personTwoController.isMicIconTappedDownAndHolding
+                          ? const RecordingFeedbackPulseAndWave()
+                          : Row(
+                              children: [
+                                Expanded(
+                                    child: Row(
+                                  children: [
+                                    const PersonTwoMaleFemaleSwitch(),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  print('Copied');
+                                                },
+                                                highlightColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                                                icon: Icon(
+                                                  Icons.copy_rounded,
+                                                  color: Theme.of(context).colorScheme.onPrimary,
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  print('Feedback');
+                                                },
+                                                highlightColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                                                icon: Icon(
+                                                  Icons.thumb_up_alt_outlined,
+                                                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                                const PersonTwoLanguageSelectionBtn(),
+                              ],
+                            );
+                    }),
+                  ),
+                ),
+                SizedBox(width: 10.h),
+                // Added this builder method just so we can have tapStartTime and tapDuration variables here itself
+                // Mic Icon
+                const PersonTwoMicIconBtn()
+              ],
+            ),
+          ),
+
+          SizedBox(height: 20.h),
+
           // Base Container where output will be shown
           Expanded(
             flex: 11,
@@ -32,108 +102,6 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.1)),
             ),
           ),
-          SizedBox(height: 20.h),
-          // Base Container with Mic Icon, Speaker, Copy buttons etc.
-          Expanded(
-            flex: 2,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(200.w), color: Theme.of(context).colorScheme.primary),
-                    child: GetBuilder<PersonOneController>(builder: (personOneController) {
-                      return personOneController.isMicIconTappedDownAndHolding
-                          ? const RecordingFeedbackPulseAndWave()
-                          : Row(
-                              children: [
-                                Expanded(child: Container(height: double.infinity, color: Colors.yellow)),
-                                // SizedBox(width: 10.w),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 10.w),
-                                  margin: EdgeInsets.symmetric(horizontal: 10.w),
-                                  height: double.infinity,
-                                  width: 0.27.sw,
-                                  child: FilledButton(
-                                    onPressed: () => print('Lanugage Button Pressed'),
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.onPrimary.withOpacity(0.75))),
-                                    child: AutoSizeText(
-                                      'English',
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                    }),
-                  ),
-                ),
-                SizedBox(width: 10.h),
-                // Added this builder method just so we can have tapStartTime and tapDuration variables here itself
-                // Mic Icon
-                Builder(builder: (context) {
-                  DateTime? tapStartTime;
-                  Duration? tapDuration;
-                  return GestureDetector(
-                    // This wont work to detect if it was just a tap or tap and hold coz implicitly once tap up is hit, onTap completes too.
-                    // onTap: () => showSnackbar(title: 'Error', message: 'Tap and hold to record!', context: context),
-                    onTapDown: (_) {
-                      AudioPlayer().play(AssetSource('audio/beep.mp3'));
-                      tapStartTime = DateTime.now();
-                      PersonOneController personOneController = Get.find();
-                      personOneController.changeIsMicIconTappedDown(
-                          isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
-                    },
-                    onTapUp: (_) {
-                      if (tapStartTime != null) {
-                        tapDuration = DateTime.now().difference(tapStartTime!);
-                        if (tapDuration! < const Duration(milliseconds: 600)) {
-                          showSnackbar(title: 'Error', message: 'Tap and hold to record!', context: context);
-                        }
-                        tapStartTime = null;
-                      }
-                      PersonOneController personOneController = Get.find();
-                      personOneController.changeIsMicIconTappedDown(
-                          isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
-                    },
-                    onTapCancel: () {
-                      PersonOneController personOneController = Get.find();
-                      personOneController.changeIsMicIconTappedDown(
-                          isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
-                    },
-                    onPanEnd: (_) {
-                      PersonOneController personOneController = Get.find();
-                      // If condition to check that things execute only when button is tapped down.
-                      /**Without If condition:
-                         * User taps and hold the button, value becomes true,
-                         * User pans slightly, things execute value becomes false, mic gets released
-                         * Now if pan continues (which usually does), this will execute again and will make value true which will make mic to be pressed again
-                         */
-                      if (personOneController.isMicIconTappedDownAndHolding) {
-                        personOneController.changeIsMicIconTappedDown(
-                            isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
-                      }
-                    },
-                    child: GetBuilder<PersonOneController>(builder: (personOneController) {
-                      return Container(
-                        width: 0.15.sw,
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.w),
-                            color: personOneController.isMicIconTappedDownAndHolding
-                                ? Theme.of(context).colorScheme.primary.withOpacity(0.6)
-                                : Theme.of(context).colorScheme.primary),
-                        child: Icon(Icons.mic_none_rounded,
-                            size: personOneController.isMicIconTappedDownAndHolding ? 60.w : 40.w, color: Theme.of(context).colorScheme.onPrimary),
-                      );
-                    }),
-                  );
-                })
-              ],
-            ),
-          ),
-
           SizedBox(height: 20.h),
         ],
       ),

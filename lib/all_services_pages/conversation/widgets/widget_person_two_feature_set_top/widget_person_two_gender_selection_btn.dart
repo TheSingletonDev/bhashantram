@@ -1,12 +1,12 @@
+import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_two_feature_set_top/person_two_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 import '../widget_male_female_base_btn.dart';
-import 'person_one_controller.dart';
 
-class PersonOneMaleFemaleSwitch extends StatelessWidget {
-  const PersonOneMaleFemaleSwitch({
+class PersonTwoMaleFemaleSwitch extends StatelessWidget {
+  const PersonTwoMaleFemaleSwitch({
     super.key,
   });
 
@@ -18,28 +18,29 @@ class PersonOneMaleFemaleSwitch extends StatelessWidget {
       height: double.infinity,
       width: 0.15.sw, // Size of Combined Male/Female Button combo with onPrimary color
       decoration: BoxDecoration(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.75), borderRadius: BorderRadius.circular(30.w)),
-      child: GetBuilder<PersonOneController>(builder: (personOneController) {
+      child: GetBuilder<PersonTwoController>(builder: (personTwoController) {
         Color primaryColor = Theme.of(context).colorScheme.primary;
         Color onPrimaryColor = Theme.of(context).colorScheme.onPrimary;
 
-        Color maleIconColor = personOneController.isFemaleBtnSelected ? primaryColor : onPrimaryColor;
-        Color maleIconContainerColor = personOneController.isFemaleBtnSelected ? Colors.transparent : primaryColor;
+        Color maleIconColor = personTwoController.isFemaleBtnSelected ? primaryColor : onPrimaryColor;
+        Color maleIconContainerColor = personTwoController.isFemaleBtnSelected ? Colors.transparent : primaryColor;
 
-        Color femaleIconColor = personOneController.isFemaleBtnSelected ? onPrimaryColor : primaryColor;
-        Color femaleIconContainerColor = personOneController.isFemaleBtnSelected ? primaryColor : Colors.transparent;
+        Color femaleIconColor = personTwoController.isFemaleBtnSelected ? onPrimaryColor : primaryColor;
+        Color femaleIconContainerColor = personTwoController.isFemaleBtnSelected ? primaryColor : Colors.transparent;
+
         return MaleFemaleSelectBaseWidget(
           maleIconContainerColor: maleIconContainerColor,
           maleIconColor: maleIconColor,
           femaleIconContainerColor: femaleIconContainerColor,
           femaleIconColor: femaleIconColor,
           onPressedMaleBtn: () {
-            if (personOneController.isFemaleBtnSelected) {
-              personOneController.changeIsFemaleIconSelected(isFemaleBtnSelected: false);
+            if (personTwoController.isFemaleBtnSelected) {
+              personTwoController.changeIsFemaleIconSelected(isFemaleBtnSelected: false);
             }
           },
           onPressedFemaleBtn: () {
-            if (!personOneController.isFemaleBtnSelected) {
-              personOneController.changeIsFemaleIconSelected(isFemaleBtnSelected: true);
+            if (!personTwoController.isFemaleBtnSelected) {
+              personTwoController.changeIsFemaleIconSelected(isFemaleBtnSelected: true);
             }
           },
         );

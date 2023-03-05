@@ -38,7 +38,8 @@ class ConversationScreen extends StatelessWidget {
                   const Expanded(
                     child: PersonTwoFeatureSetTop(),
                   ),
-                  SizedBox(height: 50.h),
+                  Container(color: Theme.of(context).colorScheme.primary.withOpacity(0.5), height: 1.h, width: 0.7.sw),
+                  SizedBox(height: 20.h),
                   // Bottom Base Container that contains Output Container and Container with Copy, Share Buttons etc.
                   const Expanded(
                     child: PersonOneFeatureSetBottom(),

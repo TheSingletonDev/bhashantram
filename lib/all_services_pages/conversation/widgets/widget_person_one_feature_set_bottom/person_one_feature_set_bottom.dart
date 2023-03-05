@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'person_one_controller.dart';
-import '../../widget_rec_fedback_pulse_wave.dart';
+import '../widget_rec_fedback_pulse_wave.dart';
 import 'widget_person_one_gender_selection_btn.dart';
 import 'widget_person_one_lang_selection_btn.dart';
 import 'widget_person_one_mic_icon_btn.dart';
@@ -25,8 +25,8 @@ class PersonOneFeatureSetBottom extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20.w),
-                    bottomRight: Radius.circular(20.w),
+                    topLeft: Radius.circular(20.w),
+                    topRight: Radius.circular(20.w),
                   ),
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.1)),
             ),
@@ -49,7 +49,7 @@ class PersonOneFeatureSetBottom extends StatelessWidget {
                                 Expanded(
                                     child: Row(
                                   children: [
-                                    const MaleFemaleSwitch(),
+                                    const PersonOneMaleFemaleSwitch(),
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 5.w),

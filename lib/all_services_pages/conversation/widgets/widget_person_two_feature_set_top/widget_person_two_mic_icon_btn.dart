@@ -5,10 +5,10 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 
 import '../../../../global/widget_snackbar.dart';
-import 'person_one_controller.dart';
+import 'person_two_controller.dart';
 
-class PersonOneMicIconBtn extends StatelessWidget {
-  const PersonOneMicIconBtn({
+class PersonTwoMicIconBtn extends StatelessWidget {
+  const PersonTwoMicIconBtn({
     super.key,
   });
 
@@ -17,15 +17,16 @@ class PersonOneMicIconBtn extends StatelessWidget {
     return Builder(builder: (context) {
       DateTime? tapStartTime;
       Duration? tapDuration;
-      PersonOneController personOneController = Get.find();
 
+      PersonTwoController personTwoController = Get.find();
       return GestureDetector(
         // This wont work to detect if it was just a tap or tap and hold coz implicitly once tap up is hit, onTap completes too.
         // onTap: () => showSnackbar(title: 'Error', message: 'Tap and hold to record!', context: context),
         onTapDown: (_) {
           AudioPlayer().play(AssetSource('audio/beep.mp3'));
           tapStartTime = DateTime.now();
-          personOneController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
+
+          personTwoController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personTwoController.isMicIconTappedDownAndHolding);
         },
         onTapUp: (_) {
           if (tapStartTime != null) {
@@ -35,10 +36,10 @@ class PersonOneMicIconBtn extends StatelessWidget {
             }
             tapStartTime = null;
           }
-          personOneController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
+          personTwoController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personTwoController.isMicIconTappedDownAndHolding);
         },
         onTapCancel: () {
-          personOneController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
+          personTwoController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personTwoController.isMicIconTappedDownAndHolding);
         },
         onPanEnd: (_) {
           // If condition to check that things execute only when button is tapped down.
@@ -47,21 +48,21 @@ class PersonOneMicIconBtn extends StatelessWidget {
              * User pans slightly, things execute value becomes false, mic gets released
              * Now if pan continues (which usually does), this will execute again and will make value true which will make mic to be pressed again
              */
-          if (personOneController.isMicIconTappedDownAndHolding) {
-            personOneController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
+          if (personTwoController.isMicIconTappedDownAndHolding) {
+            personTwoController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personTwoController.isMicIconTappedDownAndHolding);
           }
         },
-        child: GetBuilder<PersonOneController>(builder: (personOneController) {
+        child: GetBuilder<PersonTwoController>(builder: (personTwoController) {
           return Container(
             width: 0.15.sw,
             height: double.infinity,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.w),
-                color: personOneController.isMicIconTappedDownAndHolding
+                color: personTwoController.isMicIconTappedDownAndHolding
                     ? Theme.of(context).colorScheme.primary.withOpacity(0.6)
                     : Theme.of(context).colorScheme.primary),
             child: Icon(Icons.mic_none_rounded,
-                size: personOneController.isMicIconTappedDownAndHolding ? 60.w : 40.w, color: Theme.of(context).colorScheme.onPrimary),
+                size: personTwoController.isMicIconTappedDownAndHolding ? 60.w : 40.w, color: Theme.of(context).colorScheme.onPrimary),
           );
         }),
       );

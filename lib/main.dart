@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
     // }
 
     return DynamicColorBuilder(builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-      Color baseColor = Get.isDarkMode ? const Color(0xFF6f35a6) : const Color(0xFF052e70);
+      // Color baseColor = Get.isDarkMode ? const Color(0xFF6f35a6) : const Color(0xFF052e70);
+      Color baseColor = const Color(0xFF6f35a6);
       ColorScheme lightColorScheme;
       ColorScheme darkColorScheme;
 
