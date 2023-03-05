@@ -5,7 +5,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 
 import '../../../../global/widget_snackbar.dart';
-import 'person_two_controller.dart';
+import 'per2_ui_controller.dart';
 
 class PersonTwoMicIconBtn extends StatelessWidget {
   const PersonTwoMicIconBtn({
@@ -18,7 +18,7 @@ class PersonTwoMicIconBtn extends StatelessWidget {
       DateTime? tapStartTime;
       Duration? tapDuration;
 
-      PersonTwoController personTwoController = Get.find();
+      PersonTwoUIController personTwoController = Get.find();
       return GestureDetector(
         // This wont work to detect if it was just a tap or tap and hold coz implicitly once tap up is hit, onTap completes too.
         // onTap: () => showSnackbar(title: 'Error', message: 'Tap and hold to record!', context: context),
@@ -52,7 +52,7 @@ class PersonTwoMicIconBtn extends StatelessWidget {
             personTwoController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personTwoController.isMicIconTappedDownAndHolding);
           }
         },
-        child: GetBuilder<PersonTwoController>(builder: (personTwoController) {
+        child: GetBuilder<PersonTwoUIController>(builder: (personTwoController) {
           return Container(
             width: 0.15.sw,
             height: double.infinity,

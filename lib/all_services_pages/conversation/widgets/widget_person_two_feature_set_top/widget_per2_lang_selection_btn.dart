@@ -19,7 +19,7 @@ class PersonTwoLanguageSelectionBtn extends StatelessWidget {
         onPressed: () => print('Lanugage Button Pressed'),
         style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.onPrimary.withOpacity(0.75))),
         child: AutoSizeText(
-          'English',
+          'Select',
           style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
         ),
       ),
