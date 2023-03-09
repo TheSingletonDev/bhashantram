@@ -57,6 +57,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                                                       icon: Icon(
                                                         Icons.copy_rounded,
                                                         color: Theme.of(context).colorScheme.onPrimary,
+                                                        size: 30.w,
                                                       ),
                                                     ),
                                                   ),
@@ -69,6 +70,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                                                       icon: Icon(
                                                         Icons.thumb_up_alt_outlined,
                                                         color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                                                        size: 30.w,
                                                       ),
                                                     ),
                                                   ),

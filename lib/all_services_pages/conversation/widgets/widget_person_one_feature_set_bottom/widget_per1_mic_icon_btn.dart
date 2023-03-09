@@ -2,8 +2,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 
 import '../../../../global/widget_snackbar.dart';
+import '../widget_person_two_feature_set_top/per2_ui_controller.dart';
 import 'per1_ui_controller.dart';
 
 class PersonOneMicIconBtn extends StatelessWidget {
@@ -18,10 +20,11 @@ class PersonOneMicIconBtn extends StatelessWidget {
       Duration? tapDuration;
 
       return GetBuilder<PersonOneUIController>(builder: (personOneController) {
-        return personOneController.currentSelectedLanguageCode.isEmpty
+        PersonTwoUIController personTwoUIController = Get.find();
+        return personOneController.currentSelectedLanguageCode.isEmpty || personTwoUIController.currentSelectedLanguageCode.isEmpty
             ? GestureDetector(
                 // onTap: () => showSnackbar(title: 'Error', message: 'Select a language first!', context: context),
-                onTapDown: (details) => showSnackbar(title: 'Error', message: 'Select a language first!', context: context),
+                onTapDown: (details) => showSnackbar(title: 'Error', message: 'Select your language first!', context: context),
                 child: Container(
                   width: 0.15.sw,
                   height: double.infinity,

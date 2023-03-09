@@ -19,7 +19,7 @@ class MenuItemContainerModel extends StatelessWidget {
       decoration: ShapeDecoration(
         color: Theme.of(context).colorScheme.primary,
         shape: SmoothRectangleBorder(
-            borderRadius: SmoothBorderRadius(cornerRadius: 40, cornerSmoothing: 1),
+            borderRadius: SmoothBorderRadius(cornerRadius: 40.w, cornerSmoothing: 1.w),
             borderAlign: BorderAlign.center,
             side: BorderSide(color: Theme.of(context).colorScheme.primary)),
       ),

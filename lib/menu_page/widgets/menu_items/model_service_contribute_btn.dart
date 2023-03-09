@@ -25,17 +25,23 @@ class ServiceAndContributeButtonModel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(iconData, size: iconSize, color: btnColor),
-      label: AutoSizeText(
-        btnText,
-        minFontSize: 23.w,
-        stepGranularity: 1.w,
-        style: GoogleFonts.poppins(color: btnColor, fontWeight: FontWeight.w500),
-      ),
-      // style: ButtonStyle(backgroundColor: materialServiceBtnColor),
-      style: OutlinedButton.styleFrom(backgroundColor: btnAndBtnBorderColor, side: BorderSide(color: btnAndBtnBorderColor, style: BorderStyle.solid)),
-    );
+    return btnText.isEmpty
+        ? IconButton(
+            onPressed: onPressed,
+            icon: Icon(iconData, size: iconSize, color: btnColor),
+          )
+        : OutlinedButton.icon(
+            onPressed: onPressed,
+            icon: Icon(iconData, size: iconSize, color: btnColor),
+            label: AutoSizeText(
+              btnText,
+              minFontSize: 23.w,
+              stepGranularity: 1.w,
+              style: GoogleFonts.poppins(color: btnColor, fontWeight: FontWeight.w500),
+            ),
+            // style: ButtonStyle(backgroundColor: materialServiceBtnColor),
+            style: OutlinedButton.styleFrom(
+                backgroundColor: btnAndBtnBorderColor, side: BorderSide(color: btnAndBtnBorderColor, style: BorderStyle.solid)),
+          );
   }
 }

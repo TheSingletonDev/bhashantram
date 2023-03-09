@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bhashantram/all_services_pages/conversation/conversation_controller.dart';
-import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_ui_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -21,8 +20,8 @@ class ConversationScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: SafeArea(child: GetBuilder<PersonOneUIController>(builder: (personOneUIController) {
-        return !personOneUIController.isULCAConfigLoaded
+      body: SafeArea(child: GetBuilder<ConversationController>(builder: (conversationController) {
+        return !conversationController.isULCAConfigLoaded
             ? const LoadingScreen()
             : Column(
                 children: [

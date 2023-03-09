@@ -22,6 +22,13 @@ class ConversationController extends GetxController {
   final List<String> _avaiablePersonOneLanguagesBottom = [];
   List<String> get avaiablePersonOneLanguagesBottom => _avaiablePersonOneLanguagesBottom;
 
+  bool _isULCAConfigLoaded = false;
+  bool get isULCAConfigLoaded => _isULCAConfigLoaded;
+  void changeIsULCAConfigLoaded({required bool isULCAConfigLoaded}) {
+    _isULCAConfigLoaded = isULCAConfigLoaded;
+    update();
+  }
+
   void fetchULCAConfig() {
     Map<String, dynamic> payloadToSend = GlobalAppConstants.deepCopyMap(ulcaConfigRequestPayload);
 
@@ -29,10 +36,8 @@ class ConversationController extends GetxController {
     payloadToSend['pipelineRequestConfig']['submitter'] = submitterToUse;
 
     _conversationScreenAPICalls.sendULCAConfigRequest(url: 'url', payload: payloadToSend).then((response) {
-      print('Response from Post Call is: $response');
-
       _ulcaConfig = GlobalAppConstants.deepCopyMap(tempULCAConfigResponse);
-      _personOneUIController.changeIsULCAConfigLoaded(isULCAConfigLoaded: true);
+      changeIsULCAConfigLoaded(isULCAConfigLoaded: true);
       _avaiablePersonOneLanguagesBottom.clear();
       List<dynamic> languagesParameterInULCAConfig = _ulcaConfig['languages'];
       for (Map<String, dynamic> eachLanguageDict in languagesParameterInULCAConfig) {

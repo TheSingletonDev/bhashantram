@@ -21,4 +21,25 @@ class PersonTwoUIController extends GetxController {
     _shallActivatePersonTwoControls = shallActivatePersonTwoControls;
     update();
   }
+
+  String _currentSelectedLanguageCode = '';
+  String get currentSelectedLanguageCode => _currentSelectedLanguageCode;
+  void changeCurrentSelectedLanguageCode({required String currentSelectedLanguageCode}) {
+    _currentSelectedLanguageCode = currentSelectedLanguageCode;
+    update();
+  }
+
+  bool _isAvaiableLanguageDialogOpen = false;
+  bool get isAvaiableLanguageDialogOpen => _isAvaiableLanguageDialogOpen;
+  void changeIsAvaiableLanguageDialogOpen({required bool isAvaiableLanguageDialogOpen}) {
+    _isAvaiableLanguageDialogOpen = isAvaiableLanguageDialogOpen;
+    update();
+  }
+
+  bool _areLangsAvaiableForPersonTwo = false;
+  bool get areLangsAvaiableForPersonTwo => _areLangsAvaiableForPersonTwo;
+  void changeAreLangsAvaiableForPersonTwo({required bool areLangsAvaiableForPersonTwo}) {
+    _areLangsAvaiableForPersonTwo = areLangsAvaiableForPersonTwo;
+    update();
+  }
 }

@@ -92,7 +92,7 @@ class MenuItems extends StatelessWidget {
                       iconSize: 40.w,
                       onPressed: () {
                         // if condition is used because it should only toggle when the button's current state is unselected so that it can be selected
-                        // if this is not used, then when button is selected, it will get unselected.
+                        // if this is not used, then when button is selected, and we click on it, it will get unselected.
                         if (!menuScreenController.isContributionButtonClicked) {
                           menuScreenController.changeServiceBtnName(serviceBtnName: '');
                           menuScreenController.changeShouldServicesMenuItemsVisible(shouldServicesMenuItemsVisible: false);

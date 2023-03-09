@@ -29,13 +29,6 @@ class PersonOneUIController extends GetxController {
     update();
   }
 
-  bool _isULCAConfigLoaded = false;
-  bool get isULCAConfigLoaded => _isULCAConfigLoaded;
-  void changeIsULCAConfigLoaded({required bool isULCAConfigLoaded}) {
-    _isULCAConfigLoaded = isULCAConfigLoaded;
-    update();
-  }
-
   bool _areLangsAvaiableForPersonOne = false;
   bool get areLangsAvaiableForPersonOne => _areLangsAvaiableForPersonOne;
   void changeAreLangsAvaiableForPersonOne({required bool areLangsAvaiableForPersonOne}) {
