@@ -1,9 +1,10 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:bhashantram/all_services_pages/conversation/conversation_controller.dart';
+import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_recorder_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
-
 import '../../../../global/widget_snackbar.dart';
 import '../widget_person_two_feature_set_top/per2_ui_controller.dart';
 import 'per1_ui_controller.dart';
@@ -19,13 +20,16 @@ class PersonOneMicIconBtn extends StatelessWidget {
       DateTime? tapStartTime;
       Duration? tapDuration;
 
-      return GetBuilder<PersonOneUIController>(builder: (personOneController) {
-        String errorTextMsg = personOneController.currentSelectedLanguageCode.isEmpty
+      PersonOneRecorderController personOneRecorderController = Get.find();
+      ConversationController conversationController = Get.find();
+
+      return GetBuilder<PersonOneUIController>(builder: (personOneUIController) {
+        String errorTextMsg = personOneUIController.currentSelectedLanguageCode.isEmpty
             ? 'Select your language at the bottom!'
             : 'Select the language they speak at the top!';
 
         return GetBuilder<PersonTwoUIController>(builder: (personTwoUIController) {
-          return personOneController.currentSelectedLanguageCode.isEmpty || personTwoUIController.currentSelectedLanguageCode.isEmpty
+          return personOneUIController.currentSelectedLanguageCode.isEmpty || personTwoUIController.currentSelectedLanguageCode.isEmpty
               ? GestureDetector(
                   onTapDown: (details) => showSnackbar(title: 'Error', message: errorTextMsg, context: context),
                   child: Container(
@@ -41,13 +45,15 @@ class PersonOneMicIconBtn extends StatelessWidget {
                   onTapDown: (_) {
                     AudioPlayer().play(AssetSource('audio/beep.mp3'));
                     tapStartTime = DateTime.now();
-                    personOneController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
+                    personOneUIController.changeIsMicIconTappedDown(
+                        isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
 
                     // Close the language selection Container, if mic icon press is started
-                    if (personOneController.isAvaiableLanguageDialogOpen) {
-                      personOneController.changeIsAvaiableLanguageDialogOpen(
-                          isAvaiableLanguageDialogOpen: !personOneController.isAvaiableLanguageDialogOpen);
+                    if (personOneUIController.isAvaiableLanguageDialogOpen) {
+                      personOneUIController.changeIsAvaiableLanguageDialogOpen(
+                          isAvaiableLanguageDialogOpen: !personOneUIController.isAvaiableLanguageDialogOpen);
                     }
+                    personOneRecorderController.startPerOneVoiceRecording();
                   },
                   onTapUp: (_) {
                     if (tapStartTime != null) {
@@ -57,10 +63,14 @@ class PersonOneMicIconBtn extends StatelessWidget {
                       }
                       tapStartTime = null;
                     }
-                    personOneController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
+                    personOneUIController.changeIsMicIconTappedDown(
+                        isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
+                    personOneRecorderController.stopPerOneRecording();
                   },
                   onTapCancel: () {
-                    personOneController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
+                    personOneUIController.changeIsMicIconTappedDown(
+                        isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
+                    personOneRecorderController.stopPerOneRecording();
                   },
                   onPanEnd: (_) {
                     // If condition to check that things execute only when button is tapped down.
@@ -69,9 +79,10 @@ class PersonOneMicIconBtn extends StatelessWidget {
                      * User pans slightly, things execute value becomes false, mic gets released
                      * Now if pan continues (which usually does), this will execute again and will make value true which will make mic to be pressed again
                      */
-                    if (personOneController.isMicIconTappedDownAndHolding) {
-                      personOneController.changeIsMicIconTappedDown(
-                          isMicIconTappedDownAndHolding: !personOneController.isMicIconTappedDownAndHolding);
+                    if (personOneUIController.isMicIconTappedDownAndHolding) {
+                      personOneUIController.changeIsMicIconTappedDown(
+                          isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
+                      Get.find<PersonOneRecorderController>().stopPerOneRecording();
                     }
                   },
                   child: Container(
@@ -79,11 +90,11 @@ class PersonOneMicIconBtn extends StatelessWidget {
                     height: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.w),
-                        color: personOneController.isMicIconTappedDownAndHolding
+                        color: personOneUIController.isMicIconTappedDownAndHolding
                             ? Theme.of(context).colorScheme.primary.withOpacity(0.6)
                             : Theme.of(context).colorScheme.primary),
                     child: Icon(Icons.mic_none_rounded,
-                        size: personOneController.isMicIconTappedDownAndHolding ? 60.w : 40.w, color: Theme.of(context).colorScheme.onPrimary),
+                        size: personOneUIController.isMicIconTappedDownAndHolding ? 60.w : 40.w, color: Theme.of(context).colorScheme.onPrimary),
                   ));
         });
       });
