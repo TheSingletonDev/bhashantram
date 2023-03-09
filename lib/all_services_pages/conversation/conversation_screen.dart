@@ -7,7 +7,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/model_services_page_header_container.dart';
-import 'widgets/widget_person_one_feature_set_bottom/pers1_feature_set_bottom.dart';
+import 'widgets/widget_person_one_feature_set_bottom/per1_feature_set_bottom.dart';
 import 'widgets/widget_person_two_feature_set_top/per2_feature_set_top.dart';
 
 class ConversationScreen extends StatelessWidget {

@@ -28,11 +28,4 @@ class PersonOneUIController extends GetxController {
     _isAvaiableLanguageDialogOpen = isAvaiableLanguageDialogOpen;
     update();
   }
-
-  bool _areLangsAvaiableForPersonOne = false;
-  bool get areLangsAvaiableForPersonOne => _areLangsAvaiableForPersonOne;
-  void changeAreLangsAvaiableForPersonOne({required bool areLangsAvaiableForPersonOne}) {
-    _areLangsAvaiableForPersonOne = areLangsAvaiableForPersonOne;
-    update();
-  }
 }

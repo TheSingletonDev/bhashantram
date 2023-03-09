@@ -31,7 +31,7 @@ class MaleFemaleSelectBaseWidget extends StatelessWidget {
             child: IconButton(
               onPressed: onPressedMaleBtn,
               padding: EdgeInsets.only(bottom: 2.h),
-              icon: Icon(Icons.male_rounded, color: maleIconColor, size: 30.w),
+              icon: Icon(Icons.male_rounded, color: maleIconColor, size: 25.w),
             ),
           ),
         ),
@@ -44,7 +44,7 @@ class MaleFemaleSelectBaseWidget extends StatelessWidget {
             child: IconButton(
               onPressed: onPressedFemaleBtn,
               padding: EdgeInsets.only(bottom: 2.h),
-              icon: Icon(Icons.female_rounded, color: femaleIconColor, size: 30.w),
+              icon: Icon(Icons.female_rounded, color: femaleIconColor, size: 25.w),
             ),
           ),
         ),

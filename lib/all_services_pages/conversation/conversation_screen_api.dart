@@ -1,13 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
+import 'conversation_constants.dart';
+
 class ConversationScreenAPICalls extends GetxController {
   late final Dio _dio;
 
   @override
   void onInit() {
     super.onInit();
-    _dio = Dio();
+
+    _dio = Dio(BaseOptions(
+        // baseUrl: ulcaBaseURL,
+        connectTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 5),
+        validateStatus: (status) => true // Without this, if status code comes other than 200, DIO throws Exception
+        ));
   }
 
   @override
@@ -16,39 +24,45 @@ class ConversationScreenAPICalls extends GetxController {
     super.onClose();
   }
 
-  Future<dynamic> sendULCAConfigRequest({required url, required payload}) async {
+  Future<dynamic> sendULCAConfigRequest({required payload}) async {
     try {
       var response = await _dio.post(
-        url,
+        ulcaBaseURL + ulcaConfigReqURLPath,
         data: payload,
-        options: Options(headers: {'Content-Type': 'application/json', 'Accept': '*/*'}),
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'ulcaApiKey': const String.fromEnvironment('ULCA_API_KEY'),
+          'userID': const String.fromEnvironment('ULCA_USER_ID'),
+        }),
       );
 
       if (response.statusCode == 200) {
-        if (response.data['message'] == 'Request Successful') {
-          return response.data['data'];
-        }
-        return {};
+        return response.data;
       }
+      return {};
     } catch (e) {
       return {};
     }
   }
 
-  Future<dynamic> sendPipelineComputeRequest({required url, required payload}) async {
+  Future<dynamic> sendPipelineComputeRequest(
+      {required computeURL, required computeAPIKeyName, required computeAPIKeyValue, required computePayload}) async {
     try {
       var response = await _dio.post(
-        url,
-        data: payload,
-        options: Options(headers: {'Content-Type': 'application/json', 'Accept': '*/*'}),
+        computeURL,
+        data: computePayload,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          computeAPIKeyName: computeAPIKeyValue,
+        }),
       );
 
       if (response.statusCode == 200) {
-        if (response.data['message'] == 'Request Successful') {
-          return response.data['data'];
-        }
-        return {};
+        return response.data;
       }
+      return {};
     } catch (e) {
       return {};
     }

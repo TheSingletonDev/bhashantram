@@ -53,31 +53,34 @@ class PersonOneFeatureSetBottom extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: GridView.builder(
-                              itemCount: conversationController.avaiablePersonOneLanguagesBottom.length,
-                              itemBuilder: (context, index) {
-                                String eachSourceLanguage = conversationController.avaiablePersonOneLanguagesBottom.elementAt(index);
-                                return InkWell(
-                                  onTap: () {
-                                    personOneUIController.changeCurrentSelectedLanguageCode(currentSelectedLanguageCode: eachSourceLanguage);
-                                    personOneUIController.changeIsAvaiableLanguageDialogOpen(isAvaiableLanguageDialogOpen: false);
-                                    Get.find<PersonTwoUIController>().changeShallActivatePersonTwoControls(shallActivatePersonTwoControls: true);
-                                  },
-                                  child: Center(
-                                    child: AutoSizeText(
-                                      GlobalAppConstants.getLanguageCodeOrName(value: eachSourceLanguage, returnWhat: LANGUAGE_MAP.languageName),
-                                      minFontSize: (15.w).toInt().toDouble(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 30.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w300),
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 20.w),
+                              child: GridView.builder(
+                                itemCount: conversationController.avaiablePerOneLangCodesBottom.length,
+                                itemBuilder: (context, index) {
+                                  String eachTargetLanguage = conversationController.avaiablePerOneLangCodesBottom.elementAt(index);
+                                  return InkWell(
+                                    onTap: () {
+                                      personOneUIController.changeCurrentSelectedLanguageCode(currentSelectedLanguageCode: eachTargetLanguage);
+                                      personOneUIController.changeIsAvaiableLanguageDialogOpen(isAvaiableLanguageDialogOpen: false);
+                                      Get.find<PersonTwoUIController>().changeShallActivatePersonTwoControls(shallActivatePersonTwoControls: true);
+                                    },
+                                    child: Center(
+                                      child: AutoSizeText(
+                                        GlobalAppConstants.getLanguageCodeOrName(value: eachTargetLanguage, returnWhat: LANGUAGE_MAP.languageName),
+                                        minFontSize: (10.w).toInt().toDouble(),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 25.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 2,
+                                  );
+                                },
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 2.2,
+                                ),
                               ),
                             ),
                           ),
@@ -157,9 +160,22 @@ class PersonOneFeatureSetBottom extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 10.h),
-                // Added this builder method just so we can have tapStartTime and tapDuration variables here itself
                 // Mic Icon
-                const PersonOneMicIconBtn()
+                GetBuilder<PersonTwoUIController>(builder: (personTwoUIController) {
+                  return Stack(
+                    children: [
+                      const PersonOneMicIconBtn(),
+                      personTwoUIController.currentSelectedLanguageCode.isNotEmpty
+                          ? const SizedBox()
+                          : Container(
+                              width: 0.15.sw,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.w), color: Theme.of(context).colorScheme.primary.withOpacity(0.8)),
+                            )
+                    ],
+                  );
+                })
               ],
             ),
           ),
