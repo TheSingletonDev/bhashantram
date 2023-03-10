@@ -1,17 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bhashantram/all_services_pages/conversation/conversation_controller.dart';
-import 'package:bhashantram/global/enum_global.dart';
-import 'package:bhashantram/global/global_app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../global/enum_global.dart';
+import '../../../../global/global_app_constants.dart';
+import '../../../../global/widget_snackbar.dart';
+import '../../conversation_controller.dart';
 import '../widget_person_two_feature_set_top/per2_ui_controller.dart';
 import 'per1_ui_controller.dart';
 import '../widget_rec_fedback_pulse_wave.dart';
 import 'widget_per1_gender_selection_btn.dart';
 import 'widget_per1_lang_selection_btn.dart';
 import 'widget_per1_mic_icon_btn.dart';
+import 'package:clipboard/clipboard.dart';
 
 class PersonOneFeatureSetBottom extends StatelessWidget {
   const PersonOneFeatureSetBottom({
@@ -88,12 +90,31 @@ class PersonOneFeatureSetBottom extends StatelessWidget {
                       ),
                     )
                   : Container(
+                      // alignment: Alignment.bottomCenter,
+                      padding: EdgeInsets.only(left: 20.w, right: 15.w, top: 20.h),
+                      width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20.w),
                             topRight: Radius.circular(20.w),
                           ),
                           color: Theme.of(context).colorScheme.primary.withOpacity(0.1)),
+                      child: personOneUIController.outputBoxText.isEmpty && Get.find<PersonTwoUIController>().outputBoxText.isEmpty
+                          ? AutoSizeText(
+                              'This is your box. Choose a language below and speak. What you speak will appear here after you stop speaking!',
+                              minFontSize: (15.w).toInt().toDouble(),
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 30.w, color: Theme.of(context).colorScheme.primary.withOpacity(0.2), fontWeight: FontWeight.w500),
+                            )
+                          : AutoSizeText(
+                              personOneUIController.outputBoxText.toString(),
+                              minFontSize: (15.w).toInt().toDouble(),
+                              maxLines: 16,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(fontSize: 27.w, color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w500),
+                            ),
                     ),
             );
           }),
@@ -124,7 +145,11 @@ class PersonOneFeatureSetBottom extends StatelessWidget {
                                             Expanded(
                                               child: IconButton(
                                                 onPressed: () {
-                                                  print('Copied');
+                                                  if (personOneController.outputBoxText.isNotEmpty) {
+                                                    FlutterClipboard.copy(personOneController.outputBoxText).then((_) {
+                                                      showSnackbar(title: 'Success', message: 'Text copied to clipboard!', context: context);
+                                                    });
+                                                  }
                                                 },
                                                 highlightColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                                                 icon: Icon(

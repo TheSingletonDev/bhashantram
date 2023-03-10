@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
-class PersonOneRecorderController extends GetxController {
+class PersonTwoRecorderController extends GetxController {
   late final Record _audioRec;
 
   String _base64EncodedAudioContent = '';
@@ -37,7 +37,7 @@ class PersonOneRecorderController extends GetxController {
     _audioRec = Record();
   }
 
-  void startPerOneVoiceRecording() {
+  void startPerTwoVoiceRecording() {
     try {
       Permission.microphone.request().then((permissionStatus) {
         if (permissionStatus == PermissionStatus.granted) {
@@ -58,7 +58,7 @@ class PersonOneRecorderController extends GetxController {
     }
   }
 
-  void stopPerOneRecording() {
+  void stopPerTwoRecording() {
     try {
       _audioRec.isRecording().then((isRecording) {
         if (isRecording) {
@@ -76,7 +76,7 @@ class PersonOneRecorderController extends GetxController {
                         doesFileExists ? print('File deletion failed') : print('File deleted successfully');
                       });
                     });
-                    Get.find<ConversationController>().sendS2SPipelineReq(isReqForPersonAtBottom: true);
+                    Get.find<ConversationController>().sendS2SPipelineReq(isReqForPersonAtBottom: false);
 
                     changeWasRecordingSuccessAndComputeReqSent(wasRecordingSuccessAndComputeReqSent: true);
                   }

@@ -1,11 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../global/enum_global.dart';
 import '../../../../global/global_app_constants.dart';
+import '../../../../global/widget_snackbar.dart';
 import '../../conversation_controller.dart';
+import '../widget_person_one_feature_set_bottom/per1_ui_controller.dart';
 import '../widget_rec_fedback_pulse_wave.dart';
 import 'per2_ui_controller.dart';
 import 'widget_per2_gender_selection_btn.dart';
@@ -54,7 +57,11 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                                                   Expanded(
                                                     child: IconButton(
                                                       onPressed: () {
-                                                        print('Copied');
+                                                        if (personTwoController.outputBoxText.isNotEmpty) {
+                                                          FlutterClipboard.copy(personTwoController.outputBoxText).then((_) {
+                                                            showSnackbar(title: 'Success', message: 'Text copied to clipboard!', context: context);
+                                                          });
+                                                        }
                                                       },
                                                       highlightColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                                                       icon: Icon(
@@ -121,6 +128,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
           // Base Container where output will be shown
           GetBuilder<PersonTwoUIController>(builder: (personTwoUIController) {
             ConversationController conversationController = Get.find();
+
             return Expanded(
               flex: 11,
               child: personTwoUIController.isAvaiableLanguageDialogOpen
@@ -180,12 +188,30 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                       ),
                     )
                   : Container(
+                      padding: EdgeInsets.only(left: 20.w, right: 15.w, top: 20.h),
+                      width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(20.w),
                             bottomRight: Radius.circular(20.w),
                           ),
                           color: Theme.of(context).colorScheme.primary.withOpacity(0.1)),
+                      child: personTwoUIController.outputBoxText.isEmpty && Get.find<PersonOneUIController>().outputBoxText.isEmpty
+                          ? AutoSizeText(
+                              'This is their box. Ask their language and choose above. What they speak, will appear here after they stop speaking!',
+                              minFontSize: (15.w).toInt().toDouble(),
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 30.w, color: Theme.of(context).colorScheme.primary.withOpacity(0.2), fontWeight: FontWeight.w500),
+                            )
+                          : AutoSizeText(
+                              personTwoUIController.outputBoxText.toString(),
+                              minFontSize: (15.w).toInt().toDouble(),
+                              maxLines: 16,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(fontSize: 27.w, color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w500),
+                            ),
                     ),
             );
           }),

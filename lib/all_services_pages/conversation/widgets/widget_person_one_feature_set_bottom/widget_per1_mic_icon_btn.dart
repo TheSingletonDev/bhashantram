@@ -1,5 +1,4 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:bhashantram/all_services_pages/conversation/conversation_controller.dart';
 import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_recorder_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +20,6 @@ class PersonOneMicIconBtn extends StatelessWidget {
       Duration? tapDuration;
 
       PersonOneRecorderController personOneRecorderController = Get.find();
-      ConversationController conversationController = Get.find();
 
       return GetBuilder<PersonOneUIController>(builder: (personOneUIController) {
         String errorTextMsg = personOneUIController.currentSelectedLanguageCode.isEmpty
@@ -61,7 +59,6 @@ class PersonOneMicIconBtn extends StatelessWidget {
                       if (tapDuration! < const Duration(milliseconds: 600)) {
                         showSnackbar(title: 'Error', message: 'Tap and hold to record!', context: context);
                       }
-                      tapStartTime = null;
                     }
                     personOneUIController.changeIsMicIconTappedDown(
                         isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
@@ -82,7 +79,7 @@ class PersonOneMicIconBtn extends StatelessWidget {
                     if (personOneUIController.isMicIconTappedDownAndHolding) {
                       personOneUIController.changeIsMicIconTappedDown(
                           isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
-                      Get.find<PersonOneRecorderController>().stopPerOneRecording();
+                      personOneRecorderController.stopPerOneRecording();
                     }
                   },
                   child: Container(

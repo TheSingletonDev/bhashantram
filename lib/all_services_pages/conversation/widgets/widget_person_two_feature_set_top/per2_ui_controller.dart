@@ -35,4 +35,11 @@ class PersonTwoUIController extends GetxController {
     _isAvaiableLanguageDialogOpen = isAvaiableLanguageDialogOpen;
     update();
   }
+
+  String _outputBoxText = '';
+  String get outputBoxText => _outputBoxText;
+  void changeOutputBoxText({required String outputBoxText}) {
+    _outputBoxText = outputBoxText;
+    update();
+  }
 }
