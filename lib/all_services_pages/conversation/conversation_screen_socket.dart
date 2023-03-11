@@ -32,7 +32,7 @@ class SocketConnectService extends GetxService {
 
     //Socket Dhruva
     _socket = io(
-        'wss://api.dhruva.ai4bharat.org',
+        socketURL,
         OptionBuilder()
             .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
             .disableAutoConnect() // disable auto-connection

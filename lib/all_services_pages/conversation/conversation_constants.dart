@@ -1,3 +1,4 @@
+const socketURL = 'wss://api.dhruva.ai4bharat.org';
 const ulcaBaseURL = 'https://dev-auth.ulcacontrib.org/ulca/apis';
 const ulcaConfigReqURLPath = '/v0/model/getModelsPipeline';
 
