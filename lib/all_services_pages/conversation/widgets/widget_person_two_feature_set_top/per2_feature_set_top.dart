@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../global/enum_global.dart';
 import '../../../../global/global_app_constants.dart';
 import '../../../../global/widget_snackbar.dart';
+import '../../conversation_constants.dart';
 import '../../conversation_controller.dart';
 import '../widget_person_one_feature_set_bottom/per1_ui_controller.dart';
 import '../widget_rec_fedback_pulse_wave.dart';
@@ -107,7 +108,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                   // Stack so that a container on top to diable person two Mic Icon, if person one language is not set
                   Stack(
                     children: [
-                      const PersonTwoMicIconBtn(),
+                      const PersonTwoMicIconBtn(isSocketPreferred: isStreamingPreferred),
                       personTwoUIController.shallActivatePersonTwoControls && personTwoUIController.currentSelectedLanguageCode.isNotEmpty
                           ? const SizedBox()
                           : Container(

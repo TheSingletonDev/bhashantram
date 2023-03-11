@@ -7,9 +7,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
-class PersonOneRecorderController extends GetxController {
-  late final Record _audioRec;
+late final Record _audioRec;
 
+class PersonOneAPIRecorderController extends GetxController {
   String _base64EncodedAudioContent = '';
   String get base64EncodedAudioContent => _base64EncodedAudioContent;
   void changeBase64EncodedAudioContent({required String base64EncodedAudioContent}) {

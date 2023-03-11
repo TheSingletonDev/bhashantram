@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
-class PersonTwoRecorderController extends GetxController {
+class PersonTwoAPIRecorderController extends GetxController {
   late final Record _audioRec;
 
   String _base64EncodedAudioContent = '';

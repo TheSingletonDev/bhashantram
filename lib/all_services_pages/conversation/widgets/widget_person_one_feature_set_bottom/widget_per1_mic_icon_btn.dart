@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_recorder_controller.dart';
+import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_recorder_api_controller.dart';
+import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_recorder_socket_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -9,8 +10,10 @@ import '../widget_person_two_feature_set_top/per2_ui_controller.dart';
 import 'per1_ui_controller.dart';
 
 class PersonOneMicIconBtn extends StatelessWidget {
+  final bool isSocketPreferred;
   const PersonOneMicIconBtn({
     super.key,
+    required this.isSocketPreferred,
   });
 
   @override
@@ -19,7 +22,7 @@ class PersonOneMicIconBtn extends StatelessWidget {
       DateTime? tapStartTime;
       Duration? tapDuration;
 
-      PersonOneRecorderController personOneRecorderController = Get.find();
+      PersonOneAPIRecorderController personOneAPIRecorderController = Get.find();
 
       return GetBuilder<PersonOneUIController>(builder: (personOneUIController) {
         String errorTextMsg = personOneUIController.currentSelectedLanguageCode.isEmpty
@@ -51,7 +54,9 @@ class PersonOneMicIconBtn extends StatelessWidget {
                       personOneUIController.changeIsAvaiableLanguageDialogOpen(
                           isAvaiableLanguageDialogOpen: !personOneUIController.isAvaiableLanguageDialogOpen);
                     }
-                    personOneRecorderController.startPerOneVoiceRecording();
+                    isSocketPreferred
+                        ? Get.find<PersonOneSocketRecorderController>().recordVoice()
+                        : personOneAPIRecorderController.startPerOneVoiceRecording();
                   },
                   onTapUp: (_) {
                     if (tapStartTime != null) {
@@ -62,12 +67,16 @@ class PersonOneMicIconBtn extends StatelessWidget {
                     }
                     personOneUIController.changeIsMicIconTappedDown(
                         isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
-                    personOneRecorderController.stopPerOneRecording();
+                    isSocketPreferred
+                        ? Get.find<PersonOneSocketRecorderController>().stopRecording()
+                        : personOneAPIRecorderController.stopPerOneRecording();
                   },
                   onTapCancel: () {
                     personOneUIController.changeIsMicIconTappedDown(
                         isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
-                    personOneRecorderController.stopPerOneRecording();
+                    isSocketPreferred
+                        ? Get.find<PersonOneSocketRecorderController>().stopRecording()
+                        : personOneAPIRecorderController.stopPerOneRecording();
                   },
                   onPanEnd: (_) {
                     // If condition to check that things execute only when button is tapped down.
@@ -79,7 +88,9 @@ class PersonOneMicIconBtn extends StatelessWidget {
                     if (personOneUIController.isMicIconTappedDownAndHolding) {
                       personOneUIController.changeIsMicIconTappedDown(
                           isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);
-                      personOneRecorderController.stopPerOneRecording();
+                      isSocketPreferred
+                          ? Get.find<PersonOneSocketRecorderController>().stopRecording()
+                          : personOneAPIRecorderController.stopPerOneRecording();
                     }
                   },
                   child: Container(

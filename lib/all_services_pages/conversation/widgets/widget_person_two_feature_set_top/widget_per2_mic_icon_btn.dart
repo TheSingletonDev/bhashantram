@@ -1,16 +1,20 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_two_feature_set_top/per2_recorder_socket_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 
 import '../../../../global/widget_snackbar.dart';
-import 'per2_recorder_controller.dart';
+import 'per2_recorder_api_controller.dart';
 import 'per2_ui_controller.dart';
 
 class PersonTwoMicIconBtn extends StatelessWidget {
+  final bool isSocketPreferred;
+
   const PersonTwoMicIconBtn({
     super.key,
+    required this.isSocketPreferred,
   });
 
   @override
@@ -20,7 +24,7 @@ class PersonTwoMicIconBtn extends StatelessWidget {
       Duration? tapDuration;
 
       PersonTwoUIController personTwoController = Get.find();
-      PersonTwoRecorderController personTwoRecorderController = Get.find();
+      PersonTwoAPIRecorderController personTwoAPIRecorderController = Get.find();
 
       return GetBuilder<PersonTwoUIController>(builder: (personTwoUIController) {
         return GestureDetector(
@@ -36,7 +40,9 @@ class PersonTwoMicIconBtn extends StatelessWidget {
               personTwoUIController.changeIsAvaiableLanguageDialogOpen(
                   isAvaiableLanguageDialogOpen: !personTwoUIController.isAvaiableLanguageDialogOpen);
             }
-            personTwoRecorderController.startPerTwoVoiceRecording();
+            isSocketPreferred
+                ? Get.find<PersonTwoSocketRecorderController>().recordVoice()
+                : personTwoAPIRecorderController.startPerTwoVoiceRecording();
           },
           onTapUp: (_) {
             if (tapStartTime != null) {
@@ -47,11 +53,11 @@ class PersonTwoMicIconBtn extends StatelessWidget {
               tapStartTime = null;
             }
             personTwoController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personTwoController.isMicIconTappedDownAndHolding);
-            personTwoRecorderController.stopPerTwoRecording();
+            isSocketPreferred ? Get.find<PersonTwoSocketRecorderController>().stopRecording() : personTwoAPIRecorderController.stopPerTwoRecording();
           },
           onTapCancel: () {
             personTwoController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personTwoController.isMicIconTappedDownAndHolding);
-            personTwoRecorderController.stopPerTwoRecording();
+            isSocketPreferred ? Get.find<PersonTwoSocketRecorderController>().stopRecording() : personTwoAPIRecorderController.stopPerTwoRecording();
           },
           onPanEnd: (_) {
             // If condition to check that things execute only when button is tapped down.
@@ -62,7 +68,9 @@ class PersonTwoMicIconBtn extends StatelessWidget {
                  */
             if (personTwoController.isMicIconTappedDownAndHolding) {
               personTwoController.changeIsMicIconTappedDown(isMicIconTappedDownAndHolding: !personTwoController.isMicIconTappedDownAndHolding);
-              personTwoRecorderController.stopPerTwoRecording();
+              isSocketPreferred
+                  ? Get.find<PersonTwoSocketRecorderController>().stopRecording()
+                  : personTwoAPIRecorderController.stopPerTwoRecording();
             }
           },
           child: GetBuilder<PersonTwoUIController>(builder: (personTwoController) {

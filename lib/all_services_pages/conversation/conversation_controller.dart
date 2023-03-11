@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bhashantram/all_services_pages/conversation/conversation_screen_api.dart';
-import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_recorder_controller.dart';
+import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_recorder_api_controller.dart';
 import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_ui_controller.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -11,14 +11,13 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../global/global_app_constants.dart';
 import 'conversation_constants.dart';
-import 'widgets/widget_person_two_feature_set_top/per2_recorder_controller.dart';
+import 'widgets/widget_person_two_feature_set_top/per2_recorder_api_controller.dart';
 import 'widgets/widget_person_two_feature_set_top/per2_ui_controller.dart';
 
 class ConversationController extends GetxController {
   late final ConversationScreenAPICalls _conversationScreenAPICalls;
   late final PersonOneUIController _personOneUIController;
   late final PersonTwoUIController _personTwoUIController;
-  late String _ttsAudioFilePathToWrite;
 
   @override
   void onInit() {
@@ -100,15 +99,6 @@ class ConversationController extends GetxController {
       String asrServiceID = '';
       String translationServiceID = '';
       String ttsServiceID = '';
-      // isReqForPersonAtBottom
-      //     ? () {
-      //         _personTwoUIController.changeASROutput(asrOutput: '');
-      //         _personTwoUIController.changeTranslationOutput(translationOutput: '');
-      //       }()
-      //     : () {
-      //         _personOneUIController.changeASROutput(asrOutput: '');
-      //         _personOneUIController.changeTranslationOutput(translationOutput: '');
-      //       }();
       for (Map<dynamic, dynamic> eachTaskDict in _ulcaConfig['pipelineResponseConfig']) {
         if (eachTaskDict['taskType'] == 'asr') {
           List<dynamic> asrDictConfig = eachTaskDict['config'];
@@ -165,8 +155,8 @@ class ConversationController extends GetxController {
 
       Map<dynamic, dynamic> asrComputeInputDataToSend = GlobalAppConstants.deepCopyMap(asrComputeInputData);
       asrComputeInputDataToSend['audio'][0]['audioContent'] = isReqForPersonAtBottom
-          ? Get.find<PersonOneRecorderController>().base64EncodedAudioContent
-          : Get.find<PersonTwoRecorderController>().base64EncodedAudioContent;
+          ? Get.find<PersonOneAPIRecorderController>().base64EncodedAudioContent
+          : Get.find<PersonTwoAPIRecorderController>().base64EncodedAudioContent;
 
       Map<dynamic, dynamic> s2sComputePayloadToSend = GlobalAppConstants.deepCopyMap(s2sComputePayload);
       s2sComputePayloadToSend['pipelineTasks'] = [asrComputePayloadToSend, trnaslationComputePayloadToSend, ttsComputePayloadToSend];
@@ -200,11 +190,11 @@ class ConversationController extends GetxController {
             // AudioPlayer().play(BytesSource(ttsFileAsBytes));
 
             getApplicationDocumentsDirectory().then((directory) {
-              _ttsAudioFilePathToWrite = '${directory.path}/TTSAudio${DateTime.now().millisecondsSinceEpoch}.wav';
-              File(_ttsAudioFilePathToWrite).writeAsBytes(ttsFileAsBytes).then((ttsAudioFile) {
+              String ttsAudioFilePathToWrite = '${directory.path}/TTSAudio${DateTime.now().millisecondsSinceEpoch}.wav';
+              File(ttsAudioFilePathToWrite).writeAsBytes(ttsFileAsBytes).then((ttsAudioFile) {
                 ttsAudioFile.exists().then((doesFileExists) {
                   if (doesFileExists) {
-                    AudioPlayer().play(DeviceFileSource(_ttsAudioFilePathToWrite)).then((_) => AudioPlayer().play(AssetSource('audio/beep.mp3')));
+                    AudioPlayer().play(DeviceFileSource(ttsAudioFilePathToWrite)).then((_) => AudioPlayer().play(AssetSource('audio/beep.mp3')));
                   } else {
                     print('File could not be written!');
                   }
