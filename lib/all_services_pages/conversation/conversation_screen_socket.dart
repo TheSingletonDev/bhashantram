@@ -34,9 +34,8 @@ class SocketConnectService extends GetxService {
     _socket = io(
         socketURL,
         OptionBuilder()
-            .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
-            .disableAutoConnect() // disable auto-connection
-            // .setQuery({'language': 'hi', 'EIO': 4, 'transport': 'websocket'})
+            .setTransports(['websocket', 'polling'])
+            .disableAutoConnect()
             .setAuth({"authorization": const String.fromEnvironment('SOCKET_AUTH')})
             .build());
 
@@ -58,7 +57,6 @@ class SocketConnectService extends GetxService {
 
   void socketStatus() {
     _socket.onConnect((receivedData) {
-      // _uiController.changeCurrentSocketStatusAndData(currentSocketStatusAndData: ['connect', _socket.id]);
       _personOneUIController.changeOutputBoxText(outputBoxText: 'Connecting');
       _personTwoUIController.changeOutputBoxText(outputBoxText: 'Connecting');
     });
@@ -91,8 +89,8 @@ class SocketConnectService extends GetxService {
       _ttsResponse = ttsResDict.isNotEmpty ? ttsResDict['audio'][0]['audioContent'].toString() : '';
 
       print("ASR: $asrResponse");
-      print("ASR: $transResponse");
-      print("ASR: $_ttsResponse");
+      print("Translation: $transResponse");
+      print("TTS: $_ttsResponse");
 
       _isReqForPerOneAtBottom
           ? () {
@@ -150,8 +148,8 @@ class SocketConnectService extends GetxService {
                   ]
                 },
                 {"response_depth": 2},
-                false, //Changed from true to false
-                false
+                false, // Clear Server Data Flag
+                false // Let Server know, user finised speaking
               ]);
 
               if (meanSquared >= 0.8) {
@@ -173,8 +171,8 @@ class SocketConnectService extends GetxService {
                       ]
                     },
                     {"response_depth": 2},
-                    true, //Changed from true to false
-                    false
+                    false, // Clear Server Data Flag
+                    false // Let Server know, user finised speaking
                   ]);
 
                   checkSilenceList.clear();
@@ -195,7 +193,7 @@ class SocketConnectService extends GetxService {
     _socket.emit('data', [
       null,
       {"response_depth": 2},
-      true, //Changed from true to false
+      true,
       true
     ]);
 
