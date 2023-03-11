@@ -37,7 +37,7 @@ class SocketConnectService extends GetxService {
             .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
             .disableAutoConnect() // disable auto-connection
             // .setQuery({'language': 'hi', 'EIO': 4, 'transport': 'websocket'})
-            .setAuth({"authorization": "f2c3a8c9-aadf-44b0-8b1d-51cfbd16931b"})
+            .setAuth({"authorization": const String.fromEnvironment('SOCKET_AUTH')})
             .build());
 
     socketStatus();
@@ -81,7 +81,6 @@ class SocketConnectService extends GetxService {
     });
 
     _socket.on('response', (data) {
-      print('Response Data is: $data');
       List<dynamic> responseList = data['pipelineResponse'];
       Map<dynamic, dynamic> asrResDict = responseList.firstWhere((eachRes) => eachRes['taskType'] == 'asr');
       Map<dynamic, dynamic> transResDict = responseList.firstWhere((eachRes) => eachRes['taskType'] == 'translation');
@@ -90,6 +89,10 @@ class SocketConnectService extends GetxService {
       String asrResponse = asrResDict['output'][0]['source'].toString();
       String transResponse = transResDict['output'][0]['target'].toString();
       _ttsResponse = ttsResDict.isNotEmpty ? ttsResDict['audio'][0]['audioContent'].toString() : '';
+
+      print("ASR: $asrResponse");
+      print("ASR: $transResponse");
+      print("ASR: $_ttsResponse");
 
       _isReqForPerOneAtBottom
           ? () {
