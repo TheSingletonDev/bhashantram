@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_ui_controller.dart';
 import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_two_feature_set_top/per2_recorder_socket_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,6 +50,8 @@ class PersonTwoMicIconBtn extends StatelessWidget {
               tapDuration = DateTime.now().difference(tapStartTime!);
               if (tapDuration! < const Duration(milliseconds: 600)) {
                 showSnackbar(title: 'Error', message: 'Tap and hold to record!', context: context);
+                Get.find<PersonOneUIController>().changeOutputBoxText(outputBoxText: 'Please try again!');
+                personTwoUIController.changeOutputBoxText(outputBoxText: 'No Translation available');
               }
               tapStartTime = null;
             }

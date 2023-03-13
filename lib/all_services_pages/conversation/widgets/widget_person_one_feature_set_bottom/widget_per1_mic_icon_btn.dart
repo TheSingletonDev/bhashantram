@@ -64,6 +64,7 @@ class PersonOneMicIconBtn extends StatelessWidget {
                       if (tapDuration! < const Duration(milliseconds: 600)) {
                         showSnackbar(title: 'Error', message: 'Tap and hold to record!', context: context);
                       }
+                      tapStartTime = null;
                     }
                     personOneUIController.changeIsMicIconTappedDown(
                         isMicIconTappedDownAndHolding: !personOneUIController.isMicIconTappedDownAndHolding);

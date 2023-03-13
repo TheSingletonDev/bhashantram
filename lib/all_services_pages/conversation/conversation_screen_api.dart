@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'conversation_constants.dart';
 
@@ -20,7 +23,7 @@ class ConversationScreenAPICalls extends GetxController {
 
   @override
   void onClose() {
-    _dio.close();
+    closeEverything();
     super.onClose();
   }
 
@@ -65,6 +68,19 @@ class ConversationScreenAPICalls extends GetxController {
       return {};
     } catch (e) {
       return {};
+    }
+  }
+
+  void closeEverything() async {
+    _dio.close();
+    var directory = await getApplicationDocumentsDirectory();
+    var doesDirExists = await directory.exists();
+    if (doesDirExists) {
+      directory.list(recursive: true).forEach((eachFile) {
+        if (eachFile is File) {
+          eachFile.deleteSync();
+        }
+      });
     }
   }
 }

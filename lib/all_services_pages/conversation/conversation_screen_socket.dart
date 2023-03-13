@@ -14,7 +14,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 import 'widgets/widget_person_two_feature_set_top/per2_ui_controller.dart';
 
-class SocketConnectService extends GetxService {
+class SocketConnectService extends GetxController {
   late Socket _socket;
   late PersonOneUIController _personOneUIController;
   late PersonTwoUIController _personTwoUIController;
@@ -123,6 +123,7 @@ class SocketConnectService extends GetxService {
   }
 
   void recordVoice({required List<Map<dynamic, dynamic>> socketTaskSeqToSend, required bool isReqForPerOneAtBottom}) {
+    _ttsResponse = '';
     Permission.microphone.request().then((permission) {
       _isReqForPerOneAtBottom = isReqForPerOneAtBottom;
       if (permission.isGranted) {
@@ -198,6 +199,7 @@ class SocketConnectService extends GetxService {
     ]);
 
     Future.delayed(const Duration(seconds: 2)).then((_) {
+      //Dont dispose here. close means one person stopped and when next person speak same _socket can be used. If disposed, then cant use. Dispose is done in onClose
       _socket.close();
       if (_ttsResponse.isNotEmpty) {
         getApplicationDocumentsDirectory().then((directory) {
@@ -226,15 +228,23 @@ class SocketConnectService extends GetxService {
 
   @override
   void onClose() {
-    getApplicationDocumentsDirectory().then((directory) {
-      if (directory.existsSync()) {
-        directory.listSync(recursive: true).forEach((entity) {
-          if (entity is File) {
-            entity.deleteSync();
-          }
-        });
-      }
-    });
+    closeEverything();
     super.onClose();
+  }
+
+  void closeEverything() async {
+    print('CLosing this controller');
+
+    await _listerner?.cancel();
+    _socket.dispose();
+    var directory = await getApplicationDocumentsDirectory();
+    var doesDirExists = await directory.exists();
+    if (doesDirExists) {
+      directory.list(recursive: true).forEach((eachFile) {
+        if (eachFile is File) {
+          eachFile.deleteSync();
+        }
+      });
+    }
   }
 }
