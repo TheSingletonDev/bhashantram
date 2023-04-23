@@ -49,13 +49,9 @@ class PersonOneAPIRecorderController extends GetxController {
                 )
                 .then((_) => changeIsRecording(isRecording: true));
           });
-        } else {
-          print('Microphone permission not granted');
-        }
+        } else {}
       });
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   void stopPerOneRecording() {
@@ -87,7 +83,6 @@ class PersonOneAPIRecorderController extends GetxController {
         }
       });
     } catch (e) {
-      print(e);
       changeWasRecordingSuccessAndComputeReqSent(wasRecordingSuccessAndComputeReqSent: false);
       changeBase64EncodedAudioContent(base64EncodedAudioContent: '');
       changeIsRecording(isRecording: false);

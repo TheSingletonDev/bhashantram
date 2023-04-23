@@ -49,13 +49,9 @@ class PersonTwoAPIRecorderController extends GetxController {
                 )
                 .then((_) => changeIsRecording(isRecording: true));
           });
-        } else {
-          print('Microphone permission not granted');
-        }
+        } else {}
       });
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   void stopPerTwoRecording() {
@@ -65,7 +61,6 @@ class PersonTwoAPIRecorderController extends GetxController {
           _audioRec.stop().then((pathToFile) {
             _audioRec.dispose().then((_) {
               changeIsRecording(isRecording: false);
-              print(pathToFile);
               if (pathToFile != null && pathToFile.isNotEmpty) {
                 File asrFile = File(pathToFile);
                 asrFile.exists().then((doesFileExists) {
@@ -87,7 +82,6 @@ class PersonTwoAPIRecorderController extends GetxController {
         }
       });
     } catch (e) {
-      print(e);
       changeWasRecordingSuccessAndComputeReqSent(wasRecordingSuccessAndComputeReqSent: false);
       changeBase64EncodedAudioContent(base64EncodedAudioContent: '');
       changeIsRecording(isRecording: false);

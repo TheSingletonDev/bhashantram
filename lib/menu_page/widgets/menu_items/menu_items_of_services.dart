@@ -23,20 +23,20 @@ class MenuItemServices extends StatelessWidget {
               Expanded(
                   child: MenuItemContainerModel(
                       icon: Icon(Icons.settings_voice_outlined, size: 65.w, color: Theme.of(context).colorScheme.onPrimary),
-                      text: AutoSizeText('Voice',
-                          style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400)))),
+                      text: AutoSizeText('Voice', style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400)))),
               Expanded(
-                  child: MenuItemContainerModel(
-                      icon: Icon(Icons.text_fields_rounded, size: 70.w, color: Theme.of(context).colorScheme.onPrimary),
-                      text: AutoSizeText('Text',
-                          style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400)))),
+                  child: GestureDetector(
+                onTap: () => Get.toNamed(AppRoutes.getTextNMTPageRoute()),
+                child: MenuItemContainerModel(
+                    icon: Icon(Icons.text_fields_rounded, size: 70.w, color: Theme.of(context).colorScheme.onPrimary),
+                    text: AutoSizeText('Text', style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400))),
+              )),
               Expanded(
                   child: GestureDetector(
                 onTap: () => Get.toNamed(AppRoutes.getCoversationPageRoute()),
                 child: MenuItemContainerModel(
                     icon: Icon(Icons.social_distance_outlined, size: 70.w, color: Theme.of(context).colorScheme.onPrimary),
-                    text: AutoSizeText('Converse',
-                        style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400))),
+                    text: AutoSizeText('Converse', style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400))),
               )),
             ],
           ),
@@ -49,21 +49,15 @@ class MenuItemServices extends StatelessWidget {
               Expanded(
                   child: MenuItemContainerModel(
                       icon: Icon(Icons.edit_document, size: 70.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
-                      text: AutoSizeText('Document',
-                          style: GoogleFonts.poppins(
-                              fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3), fontWeight: FontWeight.w400)))),
+                      text: AutoSizeText('Document', style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3), fontWeight: FontWeight.w400)))),
               Expanded(
                   child: MenuItemContainerModel(
                       icon: Icon(Icons.fit_screen_sharp, size: 70.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
-                      text: AutoSizeText('Scan',
-                          style: GoogleFonts.poppins(
-                              fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3), fontWeight: FontWeight.w400)))),
+                      text: AutoSizeText('Scan', style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3), fontWeight: FontWeight.w400)))),
               Expanded(
                   child: MenuItemContainerModel(
                       icon: Icon(Icons.video_camera_back_outlined, size: 70.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
-                      text: AutoSizeText('Video',
-                          style: GoogleFonts.poppins(
-                              fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3), fontWeight: FontWeight.w400)))),
+                      text: AutoSizeText('Video', style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3), fontWeight: FontWeight.w400)))),
             ],
           ),
         ),

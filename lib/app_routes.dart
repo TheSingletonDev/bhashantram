@@ -1,7 +1,9 @@
 import 'package:bhashantram/all_services_pages/conversation/conversation_screen.dart';
+import 'package:bhashantram/all_services_pages/text_translation/text_screen.dart';
 import 'package:get/route_manager.dart';
 
 import 'all_services_pages/conversation/conversation_screen_binding.dart';
+import 'all_services_pages/text_translation/text_screen_bindings.dart';
 import 'menu_page/menu_screen_binding.dart';
 import 'menu_page/menu_screen_ui.dart';
 
@@ -19,5 +21,6 @@ class AppRoutes {
   static List<GetPage> routes = [
     GetPage(name: getMenuPageRoute(), page: () => const MenuScreen(), binding: MenuScreenBindings()),
     GetPage(name: getCoversationPageRoute(), page: () => const ConversationScreen(), binding: ConversationScreenBindings()),
+    GetPage(name: getTextNMTPageRoute(), page: () => const TextNMTScreen(), binding: TextNMTScreenBindings()),
   ];
 }

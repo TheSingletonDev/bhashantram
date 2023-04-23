@@ -1,9 +1,9 @@
 const socketURL = 'wss://api.dhruva.ai4bharat.org';
-const ulcaBaseURL = 'https://dev-auth.ulcacontrib.org/ulca/apis';
+const ulcaBaseURL = 'https://meity-auth.ulcacontrib.org/ulca/apis';
 const ulcaConfigReqURLPath = '/v0/model/getModelsPipeline';
 
 const submitterToUse = 'AI4Bharat';
-const isStreamingPreferred = true;
+const isStreamingPreferred = false;
 
 const taskTypeASR = {"taskType": "asr"};
 const taskTypeNMT = {"taskType": "translation"};
@@ -20,7 +20,7 @@ const asrComputePayload = {
   "config": {
     "language": {"sourceLanguage": ""},
     "audioFormat": "wav",
-    "samplingRate": 44100
+    "samplingRate": 16000
   }
 };
 

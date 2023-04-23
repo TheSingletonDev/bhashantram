@@ -1,12 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bhashantram/all_services_pages/conversation/conversation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../global/widget_loading_screen.dart';
 import '../widgets/model_services_page_header_container.dart';
+import 'conversation_controller.dart';
 import 'widgets/widget_person_one_feature_set_bottom/per1_feature_set_bottom.dart';
 import 'widgets/widget_person_two_feature_set_top/per2_feature_set_top.dart';
 
@@ -22,7 +22,7 @@ class ConversationScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: SafeArea(child: GetBuilder<ConversationController>(builder: (conversationController) {
         return !conversationController.isULCAConfigLoaded
-            ? const LoadingScreen()
+            ? const LoadingScreen(loadScreenTxt: 'Fetching languages for you!')
             : Column(
                 children: [
                   // Page header with feature name and back button
@@ -30,8 +30,7 @@ class ConversationScreen extends StatelessWidget {
                     icon: Icon(Icons.social_distance_outlined, size: 60.w, color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8)),
                     iconText: AutoSizeText(
                       'Converse',
-                      style:
-                          GoogleFonts.poppins(fontSize: 60.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontSize: 60.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w500),
                     ),
                   ),
                   // Remaining part other than page header with feature name and back button
@@ -59,35 +58,6 @@ class ConversationScreen extends StatelessWidget {
                 ],
               );
       })),
-    );
-  }
-}
-
-class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        color: Theme.of(context).colorScheme.primary,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SpinKitSpinningLines(color: Theme.of(context).colorScheme.onPrimary, size: 0.5.sw),
-            30.verticalSpace,
-            AutoSizeText.rich(
-              TextSpan(
-                  text: 'Fetching Languages for you!',
-                  style: GoogleFonts.poppins(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 25.w,
-                    fontWeight: FontWeight.w500,
-                  )),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

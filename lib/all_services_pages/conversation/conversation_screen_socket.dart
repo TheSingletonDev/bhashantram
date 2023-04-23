@@ -31,13 +31,7 @@ class SocketConnectService extends GetxController {
     _personTwoUIController = Get.find();
 
     //Socket Dhruva
-    _socket = io(
-        socketURL,
-        OptionBuilder()
-            .setTransports(['websocket', 'polling'])
-            .disableAutoConnect()
-            .setAuth({"authorization": const String.fromEnvironment('SOCKET_AUTH')})
-            .build());
+    _socket = io(socketURL, OptionBuilder().setTransports(['websocket', 'polling']).disableAutoConnect().setAuth({"authorization": const String.fromEnvironment('SOCKET_AUTH')}).build());
 
     socketStatus();
   }
@@ -208,9 +202,7 @@ class SocketConnectService extends GetxController {
             ttsAudioFile.exists().then((doesFileExists) {
               if (doesFileExists) {
                 AudioPlayer().play(DeviceFileSource(ttsAudioFilePathToWrite)).then((_) => AudioPlayer().play(AssetSource('audio/beep.mp3')));
-              } else {
-                print('File could not be written!');
-              }
+              } else {}
             });
           });
         });

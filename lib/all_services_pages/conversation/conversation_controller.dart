@@ -78,8 +78,7 @@ class ConversationController extends GetxController {
   void calcPerTwoLangsBasedOnPerOneSelection({required String personOneSelectedLangCodeInUI}) {
     List<dynamic> languagesParameterInULCAConfig = _ulcaConfig['languages'];
     _avaiablePerTwoLangCodesTop.clear();
-    List<dynamic> availablePerTwoLangCodes =
-        languagesParameterInULCAConfig.firstWhere((eachDict) => eachDict['sourceLanguage'] == personOneSelectedLangCodeInUI)['targetLanguageList'];
+    List<dynamic> availablePerTwoLangCodes = languagesParameterInULCAConfig.firstWhere((eachDict) => eachDict['sourceLanguage'] == personOneSelectedLangCodeInUI)['targetLanguageList'];
 
     for (String eachLangCode in availablePerTwoLangCodes) {
       _avaiablePerTwoLangCodesTop.add(eachLangCode.toString());
@@ -104,40 +103,31 @@ class ConversationController extends GetxController {
           List<dynamic> asrDictConfig = eachTaskDict['config'];
           Map<dynamic, dynamic> selectedLangASRDict = asrDictConfig.firstWhere((eachASRLangDict) =>
               eachASRLangDict['language']['sourceLanguage'] ==
-              (isReqForPersonAtBottom
-                  ? _personOneUIController.currentSelectedLanguageCode.toString()
-                  : _personTwoUIController.currentSelectedLanguageCode.toString()));
+              (isReqForPersonAtBottom ? _personOneUIController.currentSelectedLanguageCode.toString() : _personTwoUIController.currentSelectedLanguageCode.toString()));
           asrServiceID = selectedLangASRDict['serviceId'];
         }
         if (eachTaskDict['taskType'] == 'translation') {
           List<dynamic> translationDictConfig = eachTaskDict['config'];
           Map<dynamic, dynamic> selectedLangTransDict = translationDictConfig.firstWhere((eachTranslateLangDict) =>
               eachTranslateLangDict['language']['sourceLanguage'] ==
-                  (isReqForPersonAtBottom
-                      ? _personOneUIController.currentSelectedLanguageCode.toString()
-                      : _personTwoUIController.currentSelectedLanguageCode.toString()) &&
+                  (isReqForPersonAtBottom ? _personOneUIController.currentSelectedLanguageCode.toString() : _personTwoUIController.currentSelectedLanguageCode.toString()) &&
               eachTranslateLangDict['language']['targetLanguage'] ==
-                  (isReqForPersonAtBottom
-                      ? _personTwoUIController.currentSelectedLanguageCode.toString()
-                      : _personOneUIController.currentSelectedLanguageCode.toString()));
+                  (isReqForPersonAtBottom ? _personTwoUIController.currentSelectedLanguageCode.toString() : _personOneUIController.currentSelectedLanguageCode.toString()));
           translationServiceID = selectedLangTransDict['serviceId'];
         }
         if (eachTaskDict['taskType'] == 'tts') {
           List<dynamic> ttsDictConfig = eachTaskDict['config'];
           Map<dynamic, dynamic> selectedLangTTSDict = ttsDictConfig.firstWhere((eachTTSLangDict) =>
               eachTTSLangDict['language']['sourceLanguage'] ==
-              (isReqForPersonAtBottom
-                  ? _personTwoUIController.currentSelectedLanguageCode.toString()
-                  : _personOneUIController.currentSelectedLanguageCode.toString()));
+              (isReqForPersonAtBottom ? _personTwoUIController.currentSelectedLanguageCode.toString() : _personOneUIController.currentSelectedLanguageCode.toString()));
           ttsServiceID = selectedLangTTSDict['serviceId'];
         }
       }
 
       Map<dynamic, dynamic> asrComputePayloadToSend = GlobalAppConstants.deepCopyMap(asrComputePayload);
       asrComputePayloadToSend['serviceId'] = asrServiceID;
-      asrComputePayloadToSend['config']['language']['sourceLanguage'] = isReqForPersonAtBottom
-          ? _personOneUIController.currentSelectedLanguageCode.toString()
-          : _personTwoUIController.currentSelectedLanguageCode.toString();
+      asrComputePayloadToSend['config']['language']['sourceLanguage'] =
+          isReqForPersonAtBottom ? _personOneUIController.currentSelectedLanguageCode.toString() : _personTwoUIController.currentSelectedLanguageCode.toString();
 
       Map<dynamic, dynamic> trnaslationComputePayloadToSend = GlobalAppConstants.deepCopyMap(trnaslationComputePayload);
       trnaslationComputePayloadToSend['serviceId'] = translationServiceID;
@@ -150,13 +140,11 @@ class ConversationController extends GetxController {
       ttsComputePayloadToSend['serviceId'] = ttsServiceID;
       ttsComputePayloadToSend['config']['language']['sourceLanguage'] =
           isReqForPersonAtBottom ? _personTwoUIController.currentSelectedLanguageCode : _personOneUIController.currentSelectedLanguageCode;
-      ttsComputePayloadToSend['config']['gender'] =
-          (isReqForPersonAtBottom ? _personOneUIController.isFemaleBtnSelected : _personTwoUIController.isFemaleBtnSelected) ? 'female' : 'male';
+      ttsComputePayloadToSend['config']['gender'] = (isReqForPersonAtBottom ? _personOneUIController.isFemaleBtnSelected : _personTwoUIController.isFemaleBtnSelected) ? 'female' : 'male';
 
       Map<dynamic, dynamic> asrComputeInputDataToSend = GlobalAppConstants.deepCopyMap(asrComputeInputData);
-      asrComputeInputDataToSend['audio'][0]['audioContent'] = isReqForPersonAtBottom
-          ? Get.find<PersonOneAPIRecorderController>().base64EncodedAudioContent
-          : Get.find<PersonTwoAPIRecorderController>().base64EncodedAudioContent;
+      asrComputeInputDataToSend['audio'][0]['audioContent'] =
+          isReqForPersonAtBottom ? Get.find<PersonOneAPIRecorderController>().base64EncodedAudioContent : Get.find<PersonTwoAPIRecorderController>().base64EncodedAudioContent;
 
       Map<dynamic, dynamic> s2sComputePayloadToSend = GlobalAppConstants.deepCopyMap(s2sComputePayload);
       s2sComputePayloadToSend['pipelineTasks'] = [asrComputePayloadToSend, trnaslationComputePayloadToSend, ttsComputePayloadToSend];
@@ -170,43 +158,41 @@ class ConversationController extends GetxController {
         computePayload: s2sComputePayloadToSend,
       )
           .then((response) {
-        for (Map<dynamic, dynamic> eachResponseDict in response['pipelineResponse']) {
-          if (eachResponseDict['taskType'] == 'asr') {
-            isReqForPersonAtBottom
-                ? _personOneUIController.changeOutputBoxText(outputBoxText: eachResponseDict['output'][0]['source'].toString())
-                : _personTwoUIController.changeOutputBoxText(outputBoxText: eachResponseDict['output'][0]['source'].toString());
-          }
-          if (eachResponseDict['taskType'] == 'translation') {
-            isReqForPersonAtBottom
-                ? () {
-                    _personTwoUIController.changeOutputBoxText(outputBoxText: eachResponseDict['output'][0]['target'].toString());
-                  }()
-                : () {
-                    _personOneUIController.changeOutputBoxText(outputBoxText: eachResponseDict['output'][0]['target'].toString());
-                  }();
-          }
-          if (eachResponseDict['taskType'] == 'tts') {
-            var ttsFileAsBytes = base64Decode(eachResponseDict['audio'][0]['audioContent']);
-            // AudioPlayer().play(BytesSource(ttsFileAsBytes));
+        if (response != {}) {
+          for (Map<dynamic, dynamic> eachResponseDict in response['pipelineResponse']) {
+            if (eachResponseDict['taskType'] == 'asr') {
+              isReqForPersonAtBottom
+                  ? _personOneUIController.changeOutputBoxText(outputBoxText: eachResponseDict['output'][0]['source'].toString())
+                  : _personTwoUIController.changeOutputBoxText(outputBoxText: eachResponseDict['output'][0]['source'].toString());
+            }
+            if (eachResponseDict['taskType'] == 'translation') {
+              isReqForPersonAtBottom
+                  ? () {
+                      _personTwoUIController.changeOutputBoxText(outputBoxText: eachResponseDict['output'][0]['target'].toString());
+                    }()
+                  : () {
+                      _personOneUIController.changeOutputBoxText(outputBoxText: eachResponseDict['output'][0]['target'].toString());
+                    }();
+            }
+            if (eachResponseDict['taskType'] == 'tts') {
+              var ttsFileAsBytes = base64Decode(eachResponseDict['audio'][0]['audioContent']);
+              // AudioPlayer().play(BytesSource(ttsFileAsBytes));
 
-            getApplicationDocumentsDirectory().then((directory) {
-              String ttsAudioFilePathToWrite = '${directory.path}/TTSAudio${DateTime.now().millisecondsSinceEpoch}.wav';
-              File(ttsAudioFilePathToWrite).writeAsBytes(ttsFileAsBytes).then((ttsAudioFile) {
-                ttsAudioFile.exists().then((doesFileExists) {
-                  if (doesFileExists) {
-                    AudioPlayer().play(DeviceFileSource(ttsAudioFilePathToWrite)).then((_) => AudioPlayer().play(AssetSource('audio/beep.mp3')));
-                  } else {
-                    print('File could not be written!');
-                  }
+              getApplicationDocumentsDirectory().then((directory) {
+                String ttsAudioFilePathToWrite = '${directory.path}/TTSAudio${DateTime.now().millisecondsSinceEpoch}.wav';
+                File(ttsAudioFilePathToWrite).writeAsBytes(ttsFileAsBytes).then((ttsAudioFile) {
+                  ttsAudioFile.exists().then((doesFileExists) {
+                    if (doesFileExists) {
+                      AudioPlayer().play(DeviceFileSource(ttsAudioFilePathToWrite)).then((_) => AudioPlayer().play(AssetSource('audio/beep.mp3')));
+                    } else {}
+                  });
                 });
               });
-            });
+            }
           }
-        }
+        } else {}
       });
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   @override
