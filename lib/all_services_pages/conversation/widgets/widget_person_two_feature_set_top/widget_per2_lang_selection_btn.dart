@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bhashantram/all_services_pages/conversation/conversation_controller.dart';
+import 'package:bhashantram/all_services_pages/conversation/conversation_screen_controller.dart';
 import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_ui_controller.dart';
 import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_two_feature_set_top/per2_ui_controller.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +23,8 @@ class PersonTwoLanguageSelectionBtn extends StatelessWidget {
           ? 'Close    X'
           : personTwoUIController.currentSelectedLanguageCode.isEmpty
               ? 'Select'
-              : GlobalAppConstants.getLanguageCodeOrName(
-                  value: personTwoUIController.currentSelectedLanguageCode, returnWhat: LANGUAGE_MAP.languageName);
-      Color btnColor = personTwoUIController.isAvaiableLanguageDialogOpen
-          ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)
-          : Theme.of(context).colorScheme.onPrimary.withOpacity(0.75);
+              : GlobalAppConstants.getLanguageCodeOrName(value: personTwoUIController.currentSelectedLanguageCode, returnWhat: LANGUAGE_MAP.languageName);
+      Color btnColor = personTwoUIController.isAvaiableLanguageDialogOpen ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.9) : Theme.of(context).colorScheme.onPrimary.withOpacity(0.75);
 
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 10.w),
@@ -36,11 +33,9 @@ class PersonTwoLanguageSelectionBtn extends StatelessWidget {
         width: 0.27.sw,
         child: FilledButton(
           onPressed: () {
-            Get.find<ConversationController>()
-                .calcPerTwoLangsBasedOnPerOneSelection(personOneSelectedLangCodeInUI: Get.find<PersonOneUIController>().currentSelectedLanguageCode);
+            Get.find<ConversationScreenController>().calcPerTwoLangsBasedOnPerOneSelection(personOneSelectedLangCodeInUI: Get.find<PersonOneUIController>().currentSelectedLanguageCode);
             Get.find<PersonOneUIController>().changeIsAvaiableLanguageDialogOpen(isAvaiableLanguageDialogOpen: false);
-            personTwoUIController.changeIsAvaiableLanguageDialogOpen(
-                isAvaiableLanguageDialogOpen: !personTwoUIController.isAvaiableLanguageDialogOpen);
+            personTwoUIController.changeIsAvaiableLanguageDialogOpen(isAvaiableLanguageDialogOpen: !personTwoUIController.isAvaiableLanguageDialogOpen);
           },
           style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(btnColor)),
           child: AutoSizeText(

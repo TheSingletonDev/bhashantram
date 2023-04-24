@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'conversation_constants.dart';
+import '../../global/global_app_constants.dart';
 
 class ConversationScreenAPICalls extends GetxController {
   late final Dio _dio;
@@ -49,8 +49,7 @@ class ConversationScreenAPICalls extends GetxController {
     }
   }
 
-  Future<dynamic> sendPipelineComputeRequest(
-      {required computeURL, required computeAPIKeyName, required computeAPIKeyValue, required computePayload}) async {
+  Future<dynamic> sendPipelineComputeRequest({required computeURL, required computeAPIKeyName, required computeAPIKeyValue, required computePayload}) async {
     try {
       var response = await _dio.post(
         computeURL,

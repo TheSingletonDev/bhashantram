@@ -5,6 +5,57 @@ const appName = 'Bhashini';
 const screenUtilWidth = 540.0;
 const screenUtilHeight = 1200.0;
 
+const socketURL = 'wss://api.dhruva.ai4bharat.org';
+const ulcaBaseURL = 'https://meity-auth.ulcacontrib.org/ulca/apis';
+const ulcaConfigReqURLPath = '/v0/model/getModelsPipeline';
+
+const pipelineIdMeitY = '64392f96daac500b55c543cd';
+const pipelineIdAI4B = '643930aa521a4b1ba0f4c41d';
+const isStreamingPreferred = false;
+
+const taskTypeASR = {"taskType": "asr"};
+const taskTypeNMT = {"taskType": "translation"};
+const taskTypeTTS = {"taskType": "tts"};
+
+const ulcaConfigRequestPayload = {
+  "pipelineTasks": [],
+  "pipelineRequestConfig": {"pipelineId": ""}
+};
+
+const asrComputePayload = {
+  "taskType": "asr",
+  "config": {
+    "serviceId": "",
+    "language": {"sourceLanguage": ""},
+    "audioFormat": "wav",
+    "samplingRate": 16000
+  }
+};
+
+const trnaslationComputePayload = {
+  "taskType": "translation",
+  "config": {
+    "serviceId": "",
+    "language": {"sourceLanguage": "", "targetLanguage": ""}
+  }
+};
+const ttsComputePayload = {
+  "taskType": "tts",
+  "config": {
+    "serviceId": "",
+    "language": {"sourceLanguage": ""},
+    "gender": ""
+  }
+};
+
+const asrComputeInputData = {
+  "audio": [
+    {"audioContent": ""}
+  ]
+};
+
+const s2sComputePayload = {"pipelineTasks": [], "inputData": {}};
+
 const languageMap = {
   'language_codes': [
     {'language_name': 'Urdu', 'language_code': 'ur'},
@@ -37,13 +88,11 @@ class GlobalAppConstants {
     // If Language Code is to be returned that means the value received is a language name
     try {
       if (returnWhat == LANGUAGE_MAP.languageCode) {
-        var returningLangPair = languageMap['language_codes']!
-            .firstWhere((eachLanguageCodeNamePair) => eachLanguageCodeNamePair['language_name']!.toLowerCase() == value.toLowerCase());
+        var returningLangPair = languageMap['language_codes']!.firstWhere((eachLanguageCodeNamePair) => eachLanguageCodeNamePair['language_name']!.toLowerCase() == value.toLowerCase());
         return returningLangPair['language_code'] ?? 'No Language Code Found';
       }
 
-      var returningLangPair = languageMap['language_codes']!
-          .firstWhere((eachLanguageCodeNamePair) => eachLanguageCodeNamePair['language_code']!.toLowerCase() == value.toLowerCase());
+      var returningLangPair = languageMap['language_codes']!.firstWhere((eachLanguageCodeNamePair) => eachLanguageCodeNamePair['language_code']!.toLowerCase() == value.toLowerCase());
       return returningLangPair['language_name'] ?? 'No Language Name Found';
     } catch (e) {
       return 'No Return Value Found';

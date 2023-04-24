@@ -10,11 +10,10 @@ import 'package:get/instance_manager.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../global/global_app_constants.dart';
-import 'conversation_constants.dart';
 import 'widgets/widget_person_two_feature_set_top/per2_recorder_api_controller.dart';
 import 'widgets/widget_person_two_feature_set_top/per2_ui_controller.dart';
 
-class ConversationController extends GetxController {
+class ConversationScreenController extends GetxController {
   late final ConversationScreenAPICalls _conversationScreenAPICalls;
   late final PersonOneUIController _personOneUIController;
   late final PersonTwoUIController _personTwoUIController;
@@ -43,11 +42,11 @@ class ConversationController extends GetxController {
     update();
   }
 
-  void fetchULCAConfig() {
+  void fetchULCAConfigForConverseScreen() {
     Map<dynamic, dynamic> payloadToSend = GlobalAppConstants.deepCopyMap(ulcaConfigRequestPayload);
 
     payloadToSend['pipelineTasks'] = [taskTypeASR, taskTypeNMT, taskTypeTTS];
-    payloadToSend['pipelineRequestConfig']['submitter'] = submitterToUse;
+    payloadToSend['pipelineRequestConfig']['pipelineId'] = pipelineIdMeitY;
 
     _conversationScreenAPICalls.sendULCAConfigRequest(payload: payloadToSend).then((response) {
       _ulcaConfig = GlobalAppConstants.deepCopyMap(response);

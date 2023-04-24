@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bhashantram/all_services_pages/conversation/conversation_controller.dart';
+import 'package:bhashantram/all_services_pages/conversation/conversation_screen_controller.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -72,7 +72,7 @@ class PersonOneAPIRecorderController extends GetxController {
                         doesFileExists ? print('File deletion failed') : print('File deleted successfully');
                       });
                     });
-                    Get.find<ConversationController>().sendS2SPipelineReq(isReqForPersonAtBottom: true);
+                    Get.find<ConversationScreenController>().sendS2SPipelineReq(isReqForPersonAtBottom: true);
 
                     changeWasRecordingSuccessAndComputeReqSent(wasRecordingSuccessAndComputeReqSent: true);
                   }

@@ -44,7 +44,11 @@ class TextNMTScreen extends StatelessWidget {
                         color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(30.w),
                       ),
-                      child: InputTextField(),
+                      child: Column(
+                        children: [
+                          InputTextField(),
+                        ],
+                      ),
                     ))
               ]),
             ),
@@ -70,22 +74,31 @@ class _InputTextFieldState extends State<InputTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      maxLines: 2,
-      maxLength: 500,
-      onChanged: (value) {
-        print(value);
-        if (value.endsWith(' ')) {
-          print('now');
-        }
-      },
-      onTapOutside: (event) {
-        _focusNode.unfocus();
-      },
-      style: TextStyle(fontSize: 25.w),
-      controller: _controller,
-      focusNode: _focusNode,
-      decoration: const InputDecoration(hintText: 'Enter a search term', disabledBorder: InputBorder.none, focusedBorder: InputBorder.none),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+      child: TextField(
+        maxLines: 2,
+        maxLength: 500,
+        onChanged: (value) {
+          print(value);
+          if (value.endsWith(' ')) {
+            print('now');
+          }
+        },
+        onTapOutside: (event) {
+          _focusNode.unfocus();
+        },
+        style: TextStyle(fontSize: 25.w, color: Theme.of(context).colorScheme.onPrimary, decorationColor: Theme.of(context).colorScheme.onPrimary),
+        cursorColor: Theme.of(context).colorScheme.onPrimary,
+        controller: _controller,
+        focusNode: _focusNode,
+        decoration: InputDecoration(
+          hintText: 'Tap Here and Start Typing...',
+          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7), fontSize: 30.w, fontWeight: FontWeight.w600),
+          border: InputBorder.none,
+          counterText: '',
+        ),
+      ),
     );
   }
 

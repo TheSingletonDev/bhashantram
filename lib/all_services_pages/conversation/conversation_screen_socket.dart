@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:bhashantram/all_services_pages/conversation/conversation_constants.dart';
 import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_ui_controller.dart';
 import 'package:get/get.dart';
 import 'package:mic_stream/mic_stream.dart';
@@ -12,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
+import '../../global/global_app_constants.dart';
 import 'widgets/widget_person_two_feature_set_top/per2_ui_controller.dart';
 
 class SocketConnectService extends GetxController {

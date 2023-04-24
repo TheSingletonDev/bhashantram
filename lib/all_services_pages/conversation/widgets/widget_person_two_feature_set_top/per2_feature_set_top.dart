@@ -7,8 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../global/enum_global.dart';
 import '../../../../global/global_app_constants.dart';
 import '../../../../global/widget_snackbar.dart';
-import '../../conversation_constants.dart';
-import '../../conversation_controller.dart';
+import '../../conversation_screen_constants.dart';
+import '../../conversation_screen_controller.dart';
 import '../widget_person_one_feature_set_bottom/per1_ui_controller.dart';
 import '../widget_rec_fedback_pulse_wave.dart';
 import 'per2_ui_controller.dart';
@@ -96,9 +96,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                                   ),
                             personTwoUIController.shallActivatePersonTwoControls
                                 ? const SizedBox()
-                                : Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(200.w), color: Theme.of(context).colorScheme.primary.withOpacity(0.8))),
+                                : Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(200.w), color: Theme.of(context).colorScheme.primary.withOpacity(0.8))),
                           ],
                         );
                       }),
@@ -114,8 +112,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                           : Container(
                               width: 0.15.sw,
                               height: double.infinity,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.w), color: Theme.of(context).colorScheme.primary.withOpacity(0.8)),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.w), color: Theme.of(context).colorScheme.primary.withOpacity(0.8)),
                             )
                     ],
                   )
@@ -128,7 +125,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
 
           // Base Container where output will be shown
           GetBuilder<PersonTwoUIController>(builder: (personTwoUIController) {
-            ConversationController conversationController = Get.find();
+            ConversationScreenController conversationController = Get.find();
 
             return Expanded(
               flex: 11,
@@ -172,8 +169,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                                         minFontSize: (10.w).toInt().toDouble(),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 25.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400),
+                                        style: GoogleFonts.poppins(fontSize: 25.w, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w400),
                                       ),
                                     ),
                                   );
@@ -203,8 +199,7 @@ class PersonTwoFeatureSetTop extends StatelessWidget {
                               minFontSize: (15.w).toInt().toDouble(),
                               maxLines: 4,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                  fontSize: 30.w, color: Theme.of(context).colorScheme.primary.withOpacity(0.2), fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(fontSize: 30.w, color: Theme.of(context).colorScheme.primary.withOpacity(0.2), fontWeight: FontWeight.w500),
                             )
                           : AutoSizeText(
                               personTwoUIController.outputBoxText.toString(),

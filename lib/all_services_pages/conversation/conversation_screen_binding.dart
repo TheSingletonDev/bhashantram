@@ -2,7 +2,7 @@ import 'package:bhashantram/all_services_pages/conversation/conversation_screen_
 import 'package:bhashantram/all_services_pages/conversation/widgets/widget_person_one_feature_set_bottom/per1_recorder_socket_controller.dart';
 import 'package:get/instance_manager.dart';
 
-import 'conversation_controller.dart';
+import 'conversation_screen_controller.dart';
 import 'conversation_screen_api.dart';
 import 'widgets/widget_person_one_feature_set_bottom/per1_recorder_api_controller.dart';
 import 'widgets/widget_person_one_feature_set_bottom/per1_ui_controller.dart';
@@ -16,7 +16,7 @@ class ConversationScreenBindings implements Bindings {
     Get.put(ConversationScreenAPICalls());
     Get.put(PersonTwoUIController());
     Get.put(PersonOneUIController());
-    Get.put(ConversationController());
+    Get.put(ConversationScreenController());
     Get.put(PersonOneAPIRecorderController());
     Get.put(PersonTwoAPIRecorderController());
     Get.put(SocketConnectService());

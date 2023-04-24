@@ -2,7 +2,7 @@ import 'package:bhashantram/all_services_pages/conversation/widgets/widget_perso
 import 'package:bhashantram/global/global_app_constants.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../conversation_constants.dart';
+import '../../conversation_screen_constants.dart';
 import '../../conversation_screen_socket.dart';
 import '../widget_person_two_feature_set_top/per2_ui_controller.dart';
 

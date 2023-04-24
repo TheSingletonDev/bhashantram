@@ -6,7 +6,7 @@ import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../global/widget_loading_screen.dart';
 import '../widgets/model_services_page_header_container.dart';
-import 'conversation_controller.dart';
+import 'conversation_screen_controller.dart';
 import 'widgets/widget_person_one_feature_set_bottom/per1_feature_set_bottom.dart';
 import 'widgets/widget_person_two_feature_set_top/per2_feature_set_top.dart';
 
@@ -15,12 +15,12 @@ class ConversationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ConversationController conversationController = Get.find();
-    conversationController.fetchULCAConfig();
+    ConversationScreenController conversationController = Get.find();
+    conversationController.fetchULCAConfigForConverseScreen();
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: SafeArea(child: GetBuilder<ConversationController>(builder: (conversationController) {
+      body: SafeArea(child: GetBuilder<ConversationScreenController>(builder: (conversationController) {
         return !conversationController.isULCAConfigLoaded
             ? const LoadingScreen(loadScreenTxt: 'Fetching languages for you!')
             : Column(
