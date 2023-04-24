@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../global/enum_global.dart';
 import '../../../../global/global_app_constants.dart';
 import '../../../../global/widget_snackbar.dart';
-import '../../conversation_screen_constants.dart';
 import '../../conversation_screen_controller.dart';
 import '../widget_person_two_feature_set_top/per2_ui_controller.dart';
 import 'per1_ui_controller.dart';
