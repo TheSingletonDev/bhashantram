@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -58,6 +59,46 @@ class TextScreenAPICalls extends GetxController {
           'Content-Type': 'application/json',
           'Accept': '*/*',
           computeAPIKeyName: computeAPIKeyValue,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      return {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  Future<dynamic> fetchTransliterationModels({required payload}) async {
+    try {
+      var response = await _dio.post(
+        ulcaBaseURL + ulcaModelSearchURLPath,
+        data: payload,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          // computeAPIKeyName: computeAPIKeyValue,
+        }),
+      );
+      if (response.statusCode == 200) {
+        return response.data['data'];
+      }
+      return {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  Future<dynamic> sendTransliterationComputeRequest({required computePayload}) async {
+    try {
+      var response = await _dio.post(
+        ulcaBaseURL + ulcaModelComputeURLPath,
+        data: computePayload,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
         }),
       );
 

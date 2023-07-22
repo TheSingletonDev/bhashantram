@@ -8,10 +8,14 @@ const screenUtilHeight = 1200.0;
 const socketURL = 'wss://api.dhruva.ai4bharat.org';
 const ulcaBaseURL = 'https://meity-auth.ulcacontrib.org/ulca/apis';
 const ulcaConfigReqURLPath = '/v0/model/getModelsPipeline';
+const ulcaModelSearchURLPath = '/v0/model/search';
+const ulcaModelComputeURLPath = '/v0/model/compute';
 
 const pipelineIdMeitY = '64392f96daac500b55c543cd';
 const pipelineIdAI4B = '643930aa521a4b1ba0f4c41d';
 const isStreamingPreferred = false;
+
+const specialCharList = ['.', '?'];
 
 const taskTypeASR = {"taskType": "asr"};
 const taskTypeNMT = {"taskType": "translation"};
@@ -80,6 +84,15 @@ const languageMap = {
     {'language_name': 'Malayalam', 'language_code': 'ml'},
     {'language_name': 'Manipuri', 'language_code': 'mni'},
     {'language_name': 'Rajasthani', 'language_code': 'raj'}
+  ]
+};
+
+const transliterationModelSearchPayload = {'task': 'transliteration', 'sourceLanguage': 'en', 'targetLanguage': '', 'domain': 'All', 'submitter': 'AI4Bharat', 'userId': 'null'};
+const transliterationComputePayload = {
+  'modelId': '',
+  'task': 'transliteration',
+  'input': [
+    {'source': ''}
   ]
 };
 

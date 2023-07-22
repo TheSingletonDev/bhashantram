@@ -5,6 +5,7 @@ import 'package:bhashantram/global/enum_global.dart';
 import 'package:bhashantram/global/global_app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,10 +20,11 @@ class TextNMTScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.find<TextScreenController>().fetchULCAConfigForTextScreen();
+    Get.find<TextScreenController>().fetchTransliterationModels();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: SafeArea(child: GetBuilder<TextScreenController>(builder: (textScreenControllerr) {
-        return !textScreenControllerr.isULCAConfigLoaded
+        return !textScreenControllerr.isULCAConfigLoaded || !textScreenControllerr.areTransliterationModelsLoaded
             ? const LoadingScreen(loadScreenTxt: 'Fetching languages for you!')
             : Column(
                 children: [
@@ -42,7 +44,7 @@ class TextNMTScreen extends StatelessWidget {
                       child: Stack(children: [
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-                          height: 0.5.sh,
+                          height: 0.4.sh,
                           decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(0.2)),
                         ),
                         // Bottom Active Container
@@ -50,7 +52,7 @@ class TextNMTScreen extends StatelessWidget {
                             width: 1.sw,
                             bottom: 0,
                             child: Container(
-                              height: 0.28.sh,
+                              height: 0.38.sh,
                               margin: EdgeInsets.symmetric(horizontal: 20.w),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
@@ -150,65 +152,83 @@ class BottomTypingInputAndControlsWidget extends StatelessWidget {
     TextScreenController textScreenController = Get.find();
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: FilledButton(
-                onPressed: () {
-                  log('Language Btn Pressed: ${textScreenController.currentSelectedSourceLangCode}');
-                  textScreenController.changeShowLanguageSelectionPane(showLanguageSelectionPane: true, isSourceLangPane: true);
-                },
-                style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer)),
-                child: AutoSizeText(
-                  GlobalAppConstants.getLanguageCodeOrName(value: textScreenController.currentSelectedSourceLangCode, returnWhat: LANGUAGE_MAP.languageName),
-                  style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
+        Expanded(
+          flex: 3,
+          child: Row(
+            children: [
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    log('Language Btn Pressed: ${textScreenController.currentSelectedSourceLangCode}');
+                    textScreenController.changeShowLanguageSelectionPane(showLanguageSelectionPane: true, isSourceLangPane: true);
+                  },
+                  style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer)),
+                  child: AutoSizeText(
+                    GlobalAppConstants.getLanguageCodeOrName(value: textScreenController.currentSelectedSourceLangCode, returnWhat: LANGUAGE_MAP.languageName),
+                    style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(width: 10.w),
-            Icon(
-              Icons.compare_arrows_outlined,
-              size: 30.w,
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            SizedBox(width: 10.w),
-            Expanded(
-              child: FilledButton(
-                onPressed: () {
-                  log('Language Btn Pressed: ${textScreenController.currentSelectedTargetLangCode}');
-                  textScreenController.changeShowLanguageSelectionPane(showLanguageSelectionPane: true, isSourceLangPane: false);
-                },
-                style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer)),
-                child: AutoSizeText(
-                  GlobalAppConstants.getLanguageCodeOrName(value: textScreenController.currentSelectedTargetLangCode, returnWhat: LANGUAGE_MAP.languageName),
-                  style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
+              SizedBox(width: 10.w),
+              Icon(
+                Icons.compare_arrows_outlined,
+                size: 30.w,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    log('Language Btn Pressed: ${textScreenController.currentSelectedTargetLangCode}');
+                    textScreenController.changeShowLanguageSelectionPane(showLanguageSelectionPane: true, isSourceLangPane: false);
+                  },
+                  style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer)),
+                  child: AutoSizeText(
+                    GlobalAppConstants.getLanguageCodeOrName(value: textScreenController.currentSelectedTargetLangCode, returnWhat: LANGUAGE_MAP.languageName),
+                    style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         SizedBox(height: 15.h),
-        Row(children: [
-          Container(
-            color: Colors.red,
-            child: const Text(
-              'Malayalam',
-              textScaleFactor: 1.4,
-            ),
-          )
-        ]),
-        const Expanded(child: InputTextField()),
-        SizedBox(
-          width: 1.sw,
-          height: 50.h,
-          child: FilledButton(
-            onPressed: () {
-              log('Translate Btn Pressed');
-            },
-            style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer)),
-            child: AutoSizeText(
-              'Translate',
-              style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
+        Expanded(
+          flex: 3,
+          child: GetBuilder<TextScreenController>(builder: (textScreenController) {
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: textScreenController.transliterationOutputHints.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.only(left: 5.w, right: 20.w),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.w), color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2)),
+                  child: Center(
+                      child: Text(
+                    textScreenController.transliterationOutputHints[index],
+                    style: TextStyle(fontSize: 20.h, color: Theme.of(context).colorScheme.onPrimary),
+                  )),
+                );
+              },
+            );
+          }),
+        ),
+        const Expanded(flex: 15, child: InputTextField()),
+        Expanded(
+          flex: 3,
+          child: SizedBox(
+            width: 1.sw,
+            height: 50.h,
+            child: FilledButton(
+              onPressed: () {
+                log('Translate Btn Pressed');
+              },
+              style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer)),
+              child: AutoSizeText(
+                'Translate',
+                style: GoogleFonts.poppins(fontSize: 20.w, color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.w300),
+              ),
             ),
           ),
         ),
@@ -236,14 +256,26 @@ class _InputTextFieldState extends State<InputTextField> {
       maxLines: 4,
       maxLength: 500,
       onChanged: (value) {
-        print(value);
+        if (value.contains(' ')) {
+          List<String> splitWords = value.split(' ');
+          splitWords.removeWhere((eachWord) => eachWord.isEmpty);
+          if (splitWords.isNotEmpty) {
+            value = splitWords[splitWords.length - 1];
+          }
+        }
+        if (value.isNotEmpty) {
+          Get.find<TextScreenController>().currentWordInUIForTransCall = value.trim();
+          Get.find<TextScreenController>().sendTransliterationCall(wordToTransliterate: value.trim());
+        } else {
+          Get.find<TextScreenController>().changeTransliterationOutputHints(transliterationOutputHints: []);
+        }
         if (value.endsWith(' ')) {
           print('now');
         }
       },
-      onTapOutside: (event) {
-        _focusNode.unfocus();
-      },
+      // onTapOutside: (event) {
+      //   _focusNode.unfocus();
+      // },
       style: TextStyle(fontSize: 22.w, color: Theme.of(context).colorScheme.onPrimary, decorationColor: Theme.of(context).colorScheme.onPrimary),
       cursorColor: Theme.of(context).colorScheme.onPrimary,
       controller: _controller,

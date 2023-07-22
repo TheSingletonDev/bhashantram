@@ -3,15 +3,24 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bhashantram/all_services_pages/text_translation/text_screen_api.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../global/global_app_constants.dart';
 
 class TextScreenController extends GetxController {
   Map<dynamic, dynamic> _ulcaConfig = {};
+  final List<dynamic> _availableTransliterationModels = [];
+  String _transliterationModelID = '';
+  String currentWordInUIForTransCall = '';
   Map<dynamic, dynamic> get ulcaConfig => _ulcaConfig;
+
+  List<String> _transliterationOutputHints = ['Transliterations will appear here'];
+  List<String> get transliterationOutputHints => _transliterationOutputHints;
+  void changeTransliterationOutputHints({required List<String> transliterationOutputHints}) {
+    _transliterationOutputHints = transliterationOutputHints;
+    update();
+  }
 
   bool _isULCAConfigLoaded = false;
   bool get isULCAConfigLoaded => _isULCAConfigLoaded;
@@ -20,10 +29,25 @@ class TextScreenController extends GetxController {
     update();
   }
 
+  bool _areTransliterationModelsLoaded = false;
+  bool get areTransliterationModelsLoaded => _areTransliterationModelsLoaded;
+  void changeAreTransliterationModelsLoadedLoaded({required bool areTransliterationModelsLoaded}) {
+    _areTransliterationModelsLoaded = areTransliterationModelsLoaded;
+    update();
+  }
+
   String _currentSelectedSourceLangCode = '';
   String get currentSelectedSourceLangCode => _currentSelectedSourceLangCode;
   void changeCurrentSelectedSourceLangCode({required String currentSelectedSourceLangCode}) {
     _currentSelectedSourceLangCode = currentSelectedSourceLangCode;
+    if (currentSelectedSourceLangCode != 'en') {
+      Map<dynamic, dynamic> transliterationModel =
+          _availableTransliterationModels.firstWhere((eachTransliterationModelDict) => eachTransliterationModelDict['languages'][0]['targetLanguage'] == currentSelectedSourceLangCode);
+      _transliterationModelID = transliterationModel['modelId'];
+    } else {
+      _transliterationModelID = '';
+    }
+    changeTransliterationOutputHints(transliterationOutputHints: []);
     update();
   }
 
@@ -81,6 +105,19 @@ class TextScreenController extends GetxController {
     });
   }
 
+  void fetchTransliterationModels() {
+    _availableTransliterationModels.clear();
+
+    Map<dynamic, dynamic> payloadToSend = GlobalAppConstants.deepCopyMap(transliterationModelSearchPayload);
+    _textScreenAPICalls.fetchTransliterationModels(payload: payloadToSend).then((response) {
+      _availableTransliterationModels.addAll(response);
+      changeAreTransliterationModelsLoadedLoaded(areTransliterationModelsLoaded: true);
+      if (_availableTransliterationModels.isEmpty) {
+        print('No Transliteration Models returned!');
+      }
+    });
+  }
+
   void chooseRandomLangCodes() {
     _availableSourceLangCodesList.clear();
     List<dynamic> allAvailableSourceLangs = _ulcaConfig['languages'];
@@ -107,6 +144,33 @@ class TextScreenController extends GetxController {
     List<dynamic> correspondingTargetLangCodesList = _ulcaConfig['languages'].firstWhere((eachLangDict) => eachLangDict['sourceLanguage'] == currentSelectedSourceLangCode)['targetLanguageList'];
     changeCurrentSelectedTargetLangCode(currentSelectedTargetLangCode: correspondingTargetLangCodesList[Random().nextInt(correspondingTargetLangCodesList.length)]);
     changeCorrespondingTargetLangCodesList(correspondingTargetLangCodesList: correspondingTargetLangCodesList);
+  }
+
+  void sendTransliterationCall({required String wordToTransliterate}) {
+    if (currentSelectedSourceLangCode != 'en') {
+      Map<dynamic, dynamic> transComputePayload = GlobalAppConstants.deepCopyMap(transliterationComputePayload);
+      transComputePayload['modelId'] = _transliterationModelID;
+      transComputePayload['input'][0]['source'] = wordToTransliterate;
+      List<String> finalOutputHintsList = [];
+
+      _textScreenAPICalls.sendTransliterationComputeRequest(computePayload: transComputePayload).then((response) {
+        String inputWordInResponse = response['output'][0]['source'];
+        List<dynamic> outputHints = response['output'][0]['target'];
+        List<String> outputHintsList = [];
+        for (var eachHint in outputHints) {
+          outputHintsList.add(eachHint.toString());
+        }
+        outputHintsList.add(wordToTransliterate);
+
+        // if (inputWordInResponse == currentWordInUIForTransCall) {
+        //   //no more ui update
+        //   finalOutputHintsList.addAll(outputHintsList);
+        // }
+        // if (finalOutputHintsList.isNotEmpty) {
+        changeTransliterationOutputHints(transliterationOutputHints: outputHintsList);
+        // }
+      });
+    }
   }
 
   @override
